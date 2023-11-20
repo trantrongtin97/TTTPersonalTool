@@ -50,3 +50,21 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+
+# Ignore bin folder on Client
+**/Client/obj/
+**/Client/bin/
+
+# Ignore bin folder on Server
+**/Server/obj/
+**/Server/bin/
+
+
+# Ignore bin folder on Shared
+**/Shared/obj/
+**/Shared/bin/
+
+# Ignore .vscode and .vs
+**/.vs/
+**/Notes.txt
