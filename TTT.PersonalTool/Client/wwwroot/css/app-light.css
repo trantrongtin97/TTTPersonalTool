@@ -1,0 +1,130 @@
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+.main {
+    flex: 1;
+    background-color: #fefeff;
+}
+﻿
+.sidebar {
+    background-color: #e2e3e4;
+}
+
+.navbar-toggler {
+    background-color: #cc0100;
+    padding: 0.3px;
+    margin-bottom: 1px;
+}
+
+.nav-scrollable {
+    border-right: 1px solid #686969;
+}
+
+
+.navbar-brand {
+    font-size: 1.1rem;
+}
+
+.top-row {
+    background-color: #fefeff;
+    border-bottom: 1px solid #686969;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+.ttt-logo-img {
+    width: 50px;
+    height: 50px;
+    padding:inherit;
+}
+
+.ttt-logo-menu {
+    font-size: 1.1rem;
+    color: #cc0100;
+    padding-bottom:5px;
+}
+
+.ttt-item-menu {
+    font-size: 0.75rem;
+}
+
+.ttt-user-label {
+    font-size: 0.8rem;
+    padding-top: 20px;
+}
+
+.nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item a {
+        border-radius: 4px;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        line-height: 2rem;
+        color: #18191b;
+    }
+
+        .nav-item a.active {
+            background-color: #cc0100;
+            color: white;
+        }
+
+        .nav-item a:hover {
+            background-color: #efb0b0;
+            color: white;
+        }
+
+.oi {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+    color: black;
+}
+
+.form-switch .form-check-input {
+    height: 24px;
+    width: 48px;
+}
+
+    .form-switch .form-check-input:focus {
+        border-color: rgba(0, 0, 0, 0.25);
+        outline: 0;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(0,0,0,0.25)'/></svg>");
+    }
+
+    .form-switch .form-check-input:checked {
+        background-color: #cc0100;
+        border-color: #30D158;
+        border: none;
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(255,255,255,1.0)'/></svg>");
+    }
+
+a, .btn-link {
+    color: #0071c1;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+
+
+
+

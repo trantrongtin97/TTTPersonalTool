@@ -1,0 +1,40 @@
+﻿@inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
+@inject IToastService _toastService
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Opps...Forbidden Page!</h4>
+    <p>You are not allowed to enter here !!!!!!.</p>
+    <hr>
+    <p class="mb-0">Please contact admin to know more detail...</p>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; } = default!;
+
+    [CascadingParameter]
+    public Error Error { get; set; } = default!;
+
+    private bool IsUserAuthorized { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthenticationState;
+            var user = authState.User;
+
+            if (user.Identity is { IsAuthenticated: false })
+            {
+                _navigationManager.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            await Error.ProcessError(ex);
+        }
+    }
+
+}

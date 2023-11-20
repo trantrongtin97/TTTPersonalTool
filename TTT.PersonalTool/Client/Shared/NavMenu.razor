@@ -1,0 +1,65 @@
+﻿@inject HttpClient _httpClient
+@inject NavigationManager _navigationManager
+@inject IAccessTokenService _accessTokenService
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href=""><img src="logo/tLogo-48.gif" /><strong class="ttt-logo-menu">TTT.PersonalTool</strong></a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <AuthorizeView>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> <strong class="ttt-item-menu">Home</strong>
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="profile">
+                    <span class="oi oi-home" aria-hidden="true"></span> <strong class="ttt-item-menu">Profile</strong>
+                </NavLink>
+            </div>
+        </AuthorizeView>
+        <AuthorizeView Roles="@TTTPermissions.Admin">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="settings">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> <strong class="ttt-item-menu">Settings</strong>
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="assignroles">
+                    <span class="oi oi-key" aria-hidden="true"></span> <strong class="ttt-item-menu">Assign Roles</strong>
+                </NavLink>
+            </div>
+        </AuthorizeView>
+        <AuthorizeView>
+            <div class="nav-item px-3" @onclick="@Logout">
+                <NavLink class="nav-link">
+                    <span class="oi oi-home" aria-hidden="true"></span> <strong class="ttt-item-menu">Log Out</strong>
+                </NavLink>
+            </div>
+        </AuthorizeView>
+    </nav> 
+</div>
+
+@code {
+    private bool _collapseNavMenu = true;
+
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : string.Empty;
+
+    private void ToggleNavMenu()
+    {
+        _collapseNavMenu = !_collapseNavMenu;
+    }
+
+    private async Task Logout()
+    {
+        await _accessTokenService.RemoveAccessTokenAsync("jwt_token");
+        _navigationManager.NavigateTo("/", true);
+    }
+}

@@ -1,0 +1,76 @@
+﻿@page "/assignroles"
+
+
+@inject IAssignRolesViewModel _assignRolesViewModel
+@inject IToastService _toastService
+@inject NavigationManager _navigationManager
+@attribute [Authorize(Roles = TTTPermissions.Admin)]
+
+<h2 class="white-text"><b>Assign Roles</b></h2>
+<hr class="white-horizontal-line" />
+
+<div class="col-12 row">
+    <input type="text" class="col-12 form-control dark-theme-textbox" placeholder="search" />
+</div>
+<br />
+
+@if (_assignRolesViewModel.AllUsers?.Any() ?? false)
+{
+    foreach (var user in _assignRolesViewModel.AllUsers)
+    {
+        <div class="list-group-item list-group-item-action flex-column align-items-start contact-list-item" style="height: 55px;">
+            <div class="row col-12">
+                <div class="col-6" style="font-size: large;">
+                    @user.Username
+                </div>
+                <div class="col-3">
+                    <select class="form-control" 
+                            name="roles" 
+                            id="roles" 
+                            @onchange="@AssignRole">
+                        <option value=@($"#{user.Id}")>None</option>
+                        <option value=@($"{TTTPermissions.Admin}#{user.Id}") selected="@(user.Role==TTTPermissions.Admin)">Admin</option>
+                        <option value=@($"{TTTPermissions.Member}#{user.Id}") selected="@(user.Role ==TTTPermissions.Member)">General</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-danger" @onclick="@(() => DeleteUser(user.Id))">Delete</button>
+                </div>
+            </div>
+        </div>
+    }
+}
+<br />
+
+@code {
+    [CascadingParameter]
+    public Error Error { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _assignRolesViewModel.LoadAllUsers();
+    }
+
+    private async Task DeleteUser(int userId)
+    {
+        await _assignRolesViewModel.DeleteUser(userId);
+        await _assignRolesViewModel.LoadAllUsers();
+        StateHasChanged();
+    }
+
+    private async Task AssignRole(ChangeEventArgs eventArgs)
+    {
+        var selectedValues = (eventArgs.Value?.ToString() ?? "").Split('#');
+        int.TryParse(selectedValues[1], out int rs);
+        try
+        {
+            await _assignRolesViewModel.AssignRole(rs, selectedValues[0]);
+            _toastService.ShowSuccess("Role updated successfully");
+        }
+        catch (Exception ex)
+        {
+            await Error.ProcessError(ex);
+        }
+
+    }
+}
