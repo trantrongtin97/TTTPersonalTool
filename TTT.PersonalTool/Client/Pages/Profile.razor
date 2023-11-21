@@ -1,6 +1,7 @@
 ﻿@page "/profile"
 @using System.Security.Claims
 
+@inject IStringLocalizer<Resource> localizer
 @inject IProfileViewModel _profileViewModel
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
@@ -17,7 +18,7 @@
     <ContentTemplate>
         <div class="card">
             <div class="card-header">
-                <strong>Profile</strong>
+                <strong>@localizer["Profile"]</strong>
             </div>
             <div class="card-body">
                 <EditForm Model="@_profileViewModel" OnValidSubmit="@UpdateProfile">
@@ -29,22 +30,22 @@
                         </div>
                         <div class="col-lg-8 col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label for="FirstName">First Name</label>
-                                <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control dark-theme-textbox" placeholder="first name">
+                                <label for="FirstName">@localizer["FirstName"]</label>
+                                <input type="text" @bind-value="_profileViewModel.FirstName" class="form-control dark-theme-textbox" placeholder="@localizer["FirstName"]">
                             </div>
                             <div class="form-group">
-                                <label for="LastName">Last Name</label>
-                                <input type="text" @bind-value="_profileViewModel.LastName" class="form-control dark-theme-textbox" placeholder="last name">
+                                <label for="LastName">@localizer["LastName"]</label>
+                                <input type="text" @bind-value="_profileViewModel.LastName" class="form-control dark-theme-textbox" placeholder="@localizer["LastName"]">
                             </div>
                             <div class="form-group">
-                                <label for="DateOfBirth">DateOfBirth</label>
-                                <input type="date" @bind-value="_profileViewModel.DateOfBirth" class="form-control dark-theme-textbox" placeholder="Date Of Birth">
+                                <label for="DateOfBirth">@localizer["DateOfBirth"]</label>
+                                <input type="date" @bind-value="_profileViewModel.DateOfBirth" class="form-control dark-theme-textbox" placeholder="@localizer["DateOfBirth"]">
                             </div>
                             <div class="form-group">
-                                <label for="Username">Username</label>
-                                <input type="text" @bind-value="_profileViewModel.Username" class="form-control dark-theme-textbox" placeholder="email address" disabled="true">
+                                <label for="Username">@localizer["Username"]</label>
+                                <input type="text" @bind-value="_profileViewModel.Username" class="form-control dark-theme-textbox" placeholder="@localizer["Username"]" disabled="true">
                             </div>
-                            <button class="btn btn-danger" disabled="@(!IsUserAuthorized)" >Save</button>
+                            <button class="btn btn-danger" disabled="@(!IsUserAuthorized)">@localizer["Save"]</button>
                             @*<button class="btn btn-primary" disabled="@(!IsUserAuthorized)" @onclick="DownloadProfilePicture">Download Picture</button> *@
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 ﻿@page "/"
 @page "/{RegisterRedirect:bool}"
 
+@inject IStringLocalizer<Resource> localizer
 @inject ILoginViewModel _loginViewModel
 @inject NavigationManager _navigationManager
 @inject IToastService _toastService
@@ -23,23 +24,23 @@
                 </div>
                 <div class="col-sm">
                     <blockquote class="blockquote text-center">
-                        <p class="h3"><strong>Login</strong></p>
+                        <p class="h3"><strong>@localizer["Login"]</strong></p>
                     </blockquote>
                     <hr class="white-horizontal-line" />
                     <EditForm Model="@_loginViewModel" OnValidSubmit="@AuthenticateJWT">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
                         <div>
-                            <input id="input_emailaddress" @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.Username" class="form-control dark-theme-textbox" placeholder="username">
+                            <input id="input_emailaddress" @onkeypress="OnKeyPress" type="text" @bind="_loginViewModel.Username" class="form-control dark-theme-textbox" placeholder="@localizer["Username"]">
                         </div>
                         <br />
                         <div >
-                            <input id="input_password" @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="password">
+                            <input id="input_password" @onkeypress="OnKeyPress" type="password" @bind="_loginViewModel.Password" class="form-control dark-theme-textbox" placeholder="@localizer["Password"]">
                         </div>
                         <br />
                         <div>
                             <div>
-                                <button id="button_login" type="submit" class="btn btn-danger btn-md">Login</button>
+                                <button id="button_login" type="submit" class="btn btn-danger btn-md">@localizer["Login"]</button>
                             </div>
                             <br/>
                             <div>
@@ -76,8 +77,8 @@
         //Initializing the login details for John Smith
         if(!RegisterRedirect)
         {
-            _loginViewModel.Username = "xxxxxx";
-            _loginViewModel.Password = "xxxxxx";
+            _loginViewModel.Username = "";
+            _loginViewModel.Password = "";
         }
 
         var authState = await AuthenticationState;

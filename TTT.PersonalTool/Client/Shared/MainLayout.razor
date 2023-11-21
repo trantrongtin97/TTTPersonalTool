@@ -19,6 +19,7 @@
         <div class="top-row px-4">
             <AuthorizeView>
                 <Authorized>
+                    <CultureSelector />
                     <p class="ttt-user-label"><b>Hello, @context.User?.Identity?.Name</b></p> &nbsp; &nbsp;
                     <button class="btn btn-danger btn-sm" @onclick="LogoutUser">Logout</button>
                 </Authorized>

@@ -12,6 +12,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 #endregion
 
+builder.Services.AddLocalization();
+
 #region Add AppClient
 var applicationSettingsSection = builder.Configuration.GetSection("ApplicationSettings");
 builder.Services.Configure<ApplicationSettings>(options =>
@@ -22,5 +24,7 @@ builder.Services.AddPersonalTool(applicationSettingsSection.Get<ApplicationSetti
 #endregion
 
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+await host.SetDefaultCulture();
+await host.RunAsync();
 
