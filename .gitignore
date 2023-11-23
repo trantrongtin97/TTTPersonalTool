@@ -65,6 +65,10 @@ dkms.conf
 **/Shared/obj/
 **/Shared/bin/
 
+# Ignore bin folder on Framework
+**/TTT.Framework/obj/
+**/TTT.Framework/bin/
+
 # Ignore .vscode and .vs
 **/.vs/
 **/Notes.txt

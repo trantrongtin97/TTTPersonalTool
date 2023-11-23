@@ -1,8 +1,10 @@
-﻿using TTT.PersonalTool.Contracts.IRepositories;
+﻿using TTT.Framework.Sercurity;
+using TTT.PersonalTool.Contracts.IRepositories;
 using TTT.PersonalTool.Server.Logging;
 using TTT.PersonalTool.Server.Repositories;
-using TTT.PersonalTool.Server.Sercurity;
+using TTT.PersonalTool.Server.Services;
 using TTT.PersonalTool.Server.Services.IServices;
+using TTT.PersonalTool.Shared.IRepositories;
 
 namespace TTT.PersonalTool.Server;
 
@@ -12,6 +14,7 @@ public static class ServiceCollectionExtension
     {
         services.AddSingleton<ILoggerProvider, ApplicationLoggerProvider>();
         services.AddScoped<ITTTSercurity, TTTSercurity>();
+        services.AddScoped<ICoreSystermTTT, CoreSystermTTT>();
 
         services.AddScoped<IUserRepository, UserRepository>();
 

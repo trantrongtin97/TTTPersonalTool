@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace System.Linq;
+namespace TTT.Framework.DbExtensions;
 
 public static class TTTQueryableExtensions
 {
@@ -90,7 +90,7 @@ public static class TTTQueryableExtensions
         where TQueryable : IQueryable<T>
     {
         return condition
-            ? (TQueryable)Dynamic.Core.DynamicQueryableExtensions.OrderBy(query, sorting)
+            ? (TQueryable)System.Linq.Dynamic.Core.DynamicQueryableExtensions.OrderBy(query, sorting)
             : query;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace TTT.PersonalTool.Server.Services.IServices;
+﻿namespace TTT.Framework.Sercurity;
 
 public interface ITTTSercurity
 {

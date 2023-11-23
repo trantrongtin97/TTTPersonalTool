@@ -1,4 +1,5 @@
-﻿using TTT.PersonalTool.Shared.Models;
+﻿using TTT.Framework.EfCore;
+using TTT.PersonalTool.Shared.Models;
 
 namespace TTT.PersonalTool.Contracts.IRepositories;
 

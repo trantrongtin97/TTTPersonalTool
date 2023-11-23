@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TTT.PersonalTool.Shared.Models.Interfaces;
+using TTT.Framework.EfCore;
 
 namespace TTT.PersonalTool.Shared.Models;
 

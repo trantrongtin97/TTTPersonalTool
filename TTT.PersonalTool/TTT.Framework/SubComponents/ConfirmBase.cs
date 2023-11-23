@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace TTT.PersonalTool.Shared.SubComponents
+namespace TTT.Framework.SubComponents
 {
     public class ConfirmBase : ComponentBase
     {

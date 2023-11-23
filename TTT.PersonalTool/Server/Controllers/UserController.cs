@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using TTT.Framework.Sercurity;
 using TTT.PersonalTool.Contracts.IRepositories;
 using TTT.PersonalTool.Server.Services.IServices;
 using TTT.PersonalTool.Shared;
@@ -19,6 +15,7 @@ namespace TTT.PersonalTool.Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
+        private readonly ICoreSystermTTT _systermTTT;
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly ITTTSercurity _sercurity;
@@ -26,12 +23,14 @@ namespace TTT.PersonalTool.Server.Controllers
         public UserController(ILogger<UserController> logger,
                                 ITTTSercurity sercurity,
                                 IConfiguration configuration,
-                                IUserRepository userRepository)
+                                IUserRepository userRepository,
+                                ICoreSystermTTT systermTTT)
         {
             this._logger = logger;
             this._sercurity = sercurity;
             this._configuration = configuration;
             this._userRepository = userRepository;
+            this._systermTTT = systermTTT;
         }
 
         [HttpPost("registeruser")]
@@ -64,7 +63,7 @@ namespace TTT.PersonalTool.Server.Controllers
             }
             else
             {
-                token = GenerateJwtToken(loggedInUser);
+                token = await _systermTTT.GenerateJwtToken(loggedInUser);
             }
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
@@ -74,30 +73,8 @@ namespace TTT.PersonalTool.Server.Controllers
         {
             try
             {
-                string secretKey = _configuration["JWTSettings:SecretKey"] ?? "";
-                var key = Encoding.ASCII.GetBytes(secretKey);
-
-                var tokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                SecurityToken securityToken;
-
-                var principle = tokenHandler.ValidateToken(jwtToken, tokenValidationParameters, out securityToken);
-                var jwtSecurityToken = (JwtSecurityToken)securityToken;
-
-                if (jwtSecurityToken != null
-                    && jwtSecurityToken.ValidTo > DateTime.Now
-                    && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                    User rs = await GetUserByUserID(Convert.ToInt32(userId));
-                    return ToCleanData(rs);
-                }
+                int userid = await _systermTTT.GetUserIDByJWT(jwtToken);
+                return ToCleanData(await _userRepository.GetByIdAsync(userid) ?? new User());
             }
             catch (Exception ex)
             {
@@ -117,7 +94,6 @@ namespace TTT.PersonalTool.Server.Controllers
         [HttpPut("assignrole")]
         public async Task<ActionResult<int>> AssignRole([FromBody] User user)
         {
-            var a = await HttpContext.GetTokenAsync("access_token");
             User? userToUpdate = await _userRepository.GetByIdAsync(user.Id);
             if (userToUpdate != null)
             {
@@ -140,35 +116,12 @@ namespace TTT.PersonalTool.Server.Controllers
             return await _userRepository.GetByIdAsync(userId)??new User();
         }
 
-        protected string GenerateJwtToken(User user)
-        {
-            string secretKey = _configuration["JWTSettings:SecretKey"] ?? "";
-            var key = Encoding.ASCII.GetBytes(secretKey);
-
-            var claimEmail = new Claim(ClaimTypes.Email, user.Username);
-            var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.Id.ToString());
-            var claimRole = new Claim(ClaimTypes.Role, user.Role == null ? "" : user.Role);
-
-            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimRole }, "serverAuth");
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
-
         private static User ToCleanData(User user) =>
             new User
             {
                 Id = user.Id,
                 Username = user.Username,
-                Password = "",
+                Password = "xxx",
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ProfilePictureUrl = user.ProfilePictureUrl,

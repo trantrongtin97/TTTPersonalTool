@@ -1,4 +1,4 @@
-﻿namespace TTT.PersonalTool.Server.Sercurity;
+﻿namespace TTT.Framework.Sercurity;
 public interface IEncryptBase
 {
     public abstract string EncryptPassword(string password);

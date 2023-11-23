@@ -1,17 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using TTT.PersonalTool.Contracts.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using TTT.PersonalTool.Shared.Models.Interfaces;
-using TTT.PersonalTool.Server.DbContexts;
+using TTT.Framework.DbExtensions;
 
-namespace TTT.PersonalTool.Server.Repositories;
+namespace TTT.Framework.EfCore;
 
 public class BasicRepositoryBase<TEntity> : IBasicRepository<TEntity>, IDisposable
         where TEntity : class, IEntity
 {
-    private readonly DbPersonalToolContext _context;
+    private readonly DbContext _context;
 
-    public BasicRepositoryBase(DbPersonalToolContext context)
+    public BasicRepositoryBase(DbContext context)
     {
         _context = context;
     }

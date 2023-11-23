@@ -1,6 +1,6 @@
 ﻿using System.Net;
+using TTT.Framework.ServiceExtentions;
 using TTT.PersonalTool.Shared.Const;
-using TTT.PersonalTool.Shared.Extensions;
 using TTT.PersonalTool.Shared.Models;
 using TTT.PersonalTool.Shared.Services;
 using TTT.PersonalTool.Shared.ViewModels.Interfaces;

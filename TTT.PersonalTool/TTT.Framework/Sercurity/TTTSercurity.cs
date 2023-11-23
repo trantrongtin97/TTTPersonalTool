@@ -1,6 +1,4 @@
-﻿using TTT.PersonalTool.Server.Services.IServices;
-
-namespace TTT.PersonalTool.Server.Sercurity
+﻿namespace TTT.Framework.Sercurity
 {
     public class TTTSercurity : ITTTSercurity
     {

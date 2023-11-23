@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TTT.Framework.EfCore;
 using TTT.PersonalTool.Contracts.IRepositories;
 using TTT.PersonalTool.Server.DbContexts;
 using TTT.PersonalTool.Shared.Models;

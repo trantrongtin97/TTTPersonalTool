@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace TTT.PersonalTool.Shared.Attributes
+namespace TTT.Framework.Attributes
 {
     public class TTTPasswordValidator : ValidationAttribute
     {
@@ -20,14 +20,14 @@ namespace TTT.PersonalTool.Shared.Attributes
                 if (value == null) return new ValidationResult($"{Display} is requied", new[] { validationContext.MemberName });
             }
             string strValue = $"{value}".Trim();
-            
+
             if (strValue.Length > MaximumSize) return new ValidationResult($"Password must be less than {MaximumSize} charaters", new[] { validationContext.MemberName });
             if (strValue.Length < MinimumSize) return new ValidationResult($"Password must be greater than {MinimumSize} charaters", new[] { validationContext.MemberName });
-            
-            if (!String.IsNullOrEmpty(StringRegex))
+
+            if (!string.IsNullOrEmpty(StringRegex))
             {
                 Regex validateGuidRegex = new Regex(StringRegex);
-                if(!validateGuidRegex.IsMatch(strValue)) return new ValidationResult($"Password format is not correct", new[] { validationContext.MemberName });
+                if (!validateGuidRegex.IsMatch(strValue)) return new ValidationResult($"Password format is not correct", new[] { validationContext.MemberName });
             }
 
             return null;

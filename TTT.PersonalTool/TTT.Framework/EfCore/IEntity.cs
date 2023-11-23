@@ -1,4 +1,4 @@
-﻿namespace TTT.PersonalTool.Shared.Models.Interfaces;
+﻿namespace TTT.Framework.EfCore;
 
 public interface IEntity
 {

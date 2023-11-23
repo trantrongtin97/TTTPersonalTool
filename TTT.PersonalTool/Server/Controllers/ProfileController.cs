@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TTT.PersonalTool.Contracts.IRepositories;
+using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Models;
 
 namespace TTT.PersonalTool.Server.Controllers
@@ -40,7 +41,7 @@ namespace TTT.PersonalTool.Server.Controllers
         {
             User? user = await _userRepository.GetByIdAsync(userId);
             if (user == null) return new User();
-                return ToCleanData(user);
+            return ToCleanData(user);
         }
 
         [HttpGet("DownloadServerFile")]
@@ -59,11 +60,11 @@ namespace TTT.PersonalTool.Server.Controllers
         }
 
         private static User ToCleanData(User user) =>
-         new User
+         new()
          {
              Id = user.Id,
              Username = user.Username,
-             Password = "",
+             Password = "xxx",
              FirstName = user.FirstName,
              LastName = user.LastName,
              ProfilePictureUrl = user.ProfilePictureUrl,

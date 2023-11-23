@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
-namespace TTT.PersonalTool.Shared.Attributes
+namespace TTT.Framework.Attributes
 {
     public class TTTStringValidator : ValidationAttribute
     {
@@ -16,7 +15,7 @@ namespace TTT.PersonalTool.Shared.Attributes
             if (string.IsNullOrEmpty(Display)) Display = validationContext.DisplayName;
             if (Requied)
             {
-                if(value == null) return new ValidationResult($"{Display} is requied", new[] { validationContext.MemberName });
+                if (value == null) return new ValidationResult($"{Display} is requied", new[] { validationContext.MemberName });
             }
             string strValue = $"{value}".Trim();
 

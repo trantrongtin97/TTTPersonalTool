@@ -2,23 +2,24 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using TTT.PersonalTool.Contracts.IRepositories;
 using TTT.PersonalTool.Shared.Models;
 using TTT.PersonalTool.Server.Services.IServices;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 
 namespace TTT.PersonalTool.Server.Services
 {
+    /// <summary>
+    /// Class core to handle user request and token
+    /// </summary>
     public class CoreSystermTTT : ICoreSystermTTT
     {
 
         private readonly IConfiguration _configuration;
-        private readonly ILogger _logger;
-        private readonly IUserRepository _userRepository;
-        public CoreSystermTTT(IConfiguration configuration, ILogger logger, IUserRepository userRepository)
+        public CoreSystermTTT(IConfiguration configuration)
         {
             _configuration = configuration;
-            _logger = logger;
-            _userRepository = userRepository;
         }
         public Task<string> GenerateJwtToken(User user)
         {
@@ -43,12 +44,14 @@ namespace TTT.PersonalTool.Server.Services
             return Task.FromResult(tokenHandler.WriteToken(token));
         }
 
-        public Task<User> GetRequestUser()
+        public async Task<int> GetIDRequestUser(HttpContext httpContext)
         {
-            throw new NotImplementedException();
+            var rawToken = await httpContext.GetTokenAsync("access_token");
+            //var includeBearer = Request.Headers["Authorization"];
+            return await GetUserIDByJWT(rawToken);
         }
 
-        public async Task<User> GetUserByJWT(string jwtToken)
+        public async Task<int> GetUserIDByJWT(string jwtToken)
         {
             string secretKey = _configuration["JWTSettings:SecretKey"] ?? "";
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -71,9 +74,9 @@ namespace TTT.PersonalTool.Server.Services
                 && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                return await _userRepository.GetByIdAsync(Convert.ToInt32(userId)) ?? new User();
+                return Convert.ToInt32(userId);
             }
-            return new User();
+            return 0;
         }
     }
 }

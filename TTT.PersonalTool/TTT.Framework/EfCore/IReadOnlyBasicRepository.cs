@@ -1,6 +1,4 @@
-﻿using TTT.PersonalTool.Shared.Models.Interfaces;
-
-namespace TTT.PersonalTool.Contracts.IRepositories;
+﻿namespace TTT.Framework.EfCore;
 
 public interface IReadOnlyBasicRepository<TEntity>
      where TEntity : class, IEntity

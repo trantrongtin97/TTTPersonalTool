@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using TTT.PersonalTool.Shared.Enums;
 using TTT.PersonalTool.Shared.Models;
-using TTT.PersonalTool.Shared.Attributes;
-using TTT.PersonalTool.Shared.Extensions;
 using TTT.PersonalTool.Shared.Services;
 using TTT.PersonalTool.Shared.ViewModels.Interfaces;
+using TTT.Framework.Attributes;
+using TTT.Framework.ServiceExtentions;
 
 namespace TTT.PersonalTool.Shared.ViewModels
 {

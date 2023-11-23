@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
-using TTT.PersonalTool.Shared.Models.Interfaces;
 
-namespace TTT.PersonalTool.Contracts.IRepositories;
+namespace TTT.Framework.EfCore;
 
 public interface IBasicRepository<TEntity> : IReadOnlyBasicRepository<TEntity>
     where TEntity : class, IEntity
