@@ -7,7 +7,7 @@ namespace TTT.Framework.Attributes
         public string Display { get; set; } = string.Empty;
         public bool Requied { get; set; } = false;
         public int MaximumSize { get; set; } = 1;
-        public int MinimumSize { get; set; } = 1;
+        public int MinimumSize { get; set; } = 0;
 
         protected override ValidationResult IsValid(object value,
             ValidationContext validationContext)

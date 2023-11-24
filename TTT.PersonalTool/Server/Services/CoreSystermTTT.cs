@@ -26,11 +26,13 @@ namespace TTT.PersonalTool.Server.Services
             string secretKey = _configuration["JWTSettings:SecretKey"] ?? "";
             var key = Encoding.ASCII.GetBytes(secretKey);
 
-            var claimEmail = new Claim(ClaimTypes.Email, user.Username);
+            var claimName = new Claim(ClaimTypes.Name, user.Username??string.Empty);
+            var claimSurName = new Claim(ClaimTypes.Surname, user.TenantCode ?? string.Empty);
+            var claimEmail = new Claim(ClaimTypes.Email, user.Username ?? string.Empty);
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.Id.ToString());
             var claimRole = new Claim(ClaimTypes.Role, user.Role == null ? "" : user.Role);
 
-            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimRole }, "serverAuth");
+            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimRole, claimName, claimSurName }, "serverAuth");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claimsIdentity,

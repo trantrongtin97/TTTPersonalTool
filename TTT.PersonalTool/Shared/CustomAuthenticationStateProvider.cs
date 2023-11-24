@@ -63,10 +63,12 @@ namespace TTT.PersonalTool.Shared
 
         private ClaimsPrincipal GetClaimsPrinciple(User currentUser)
         {
-            var claimEmailAddress = new Claim(ClaimTypes.Name, currentUser.Username);
+            var claimName = new Claim(ClaimTypes.Name, currentUser.Username??string.Empty);
+            var claimSurName = new Claim(ClaimTypes.Surname, currentUser.TenantCode ?? string.Empty);
+            var claimEmail = new Claim(ClaimTypes.Email, currentUser.Username ?? string.Empty);
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, Convert.ToString(currentUser.Id));
             var claimRole = new Claim(ClaimTypes.Role, currentUser.Role == null ? "" : currentUser.Role);
-            var claimsIdentity = new ClaimsIdentity(new[] { claimEmailAddress, claimNameIdentifier, claimRole }, "serverAuth");
+            var claimsIdentity = new ClaimsIdentity(new[] { claimName, claimNameIdentifier, claimRole, claimSurName, claimEmail }, "serverAuth");
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             return claimsPrincipal;

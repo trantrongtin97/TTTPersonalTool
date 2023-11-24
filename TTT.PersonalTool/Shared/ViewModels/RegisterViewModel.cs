@@ -6,6 +6,7 @@ using TTT.PersonalTool.Shared.Services;
 using TTT.PersonalTool.Shared.ViewModels.Interfaces;
 using TTT.Framework.Attributes;
 using TTT.Framework.ServiceExtentions;
+using TTT.PersonalTool.Shared.Dtos;
 
 namespace TTT.PersonalTool.Shared.ViewModels
 {
@@ -25,6 +26,9 @@ namespace TTT.PersonalTool.Shared.ViewModels
 
         [Compare("Password", ErrorMessage = "Password and Re-enter Password must match")]
         public string ReenterPassword { get; set; }
+
+        [TTTStringValidator(MaximumSize = DefineFieldValue.String_Lenght_500, Display = "Tenant Code")]
+        public string TenantCode { get; set; }
 
         private readonly HttpClient _httpClient;
         private readonly IAccessTokenService _accessTokenService;
@@ -54,13 +58,14 @@ namespace TTT.PersonalTool.Shared.ViewModels
                 Password = user.Password
             };
 
-        public static implicit operator User(RegisterViewModel registerViewModel) =>
+        public static implicit operator RegisterDto(RegisterViewModel registerViewModel) =>
             new()
             {
                 FirstName = registerViewModel.FirstName,
                 LastName = registerViewModel.LastName,
                 Username = registerViewModel.Username,
-                Password = registerViewModel.Password
+                Password = registerViewModel.Password,
+                TenantCode = registerViewModel.TenantCode
             };
     }
 }

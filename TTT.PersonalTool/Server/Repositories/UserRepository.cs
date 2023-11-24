@@ -20,7 +20,7 @@ public class UserRepository : BasicRepositoryBase<User>, IUserRepository
         {
             Id = t.Id,
             Username = t.Username,
-            Password = "",
+            Password = "xxx",
             Role = t.Role,
             Theme = t.Theme
         }).ToListAsync();
@@ -39,12 +39,14 @@ public class UserRepository : BasicRepositoryBase<User>, IUserRepository
 
     public async Task<User?> VerifyUsernamePasswordAsync(string username, string password)
     {
+        var a = _context.Users.ToList();
         return await _context.Users.Where(x => x.Username == username && x.Password == password).Select(t => new User
         {
             Id = t.Id,
             Username = t.Username,
             Role = t.Role,
-            Theme = t.Theme
+            Theme = t.Theme,
+            TenantCode = t.TenantCode
         }).FirstOrDefaultAsync();
     }
 }

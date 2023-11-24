@@ -13,10 +13,12 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddPersonalTool(this IServiceCollection services)
     {
         services.AddSingleton<ILoggerProvider, ApplicationLoggerProvider>();
+        services.AddScoped<IControlDataProvider, ControlDataByTenant>();
         services.AddScoped<ITTTSercurity, TTTSercurity>();
         services.AddScoped<ICoreSystermTTT, CoreSystermTTT>();
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITenantRepository, TenantRepository>();
 
         return services;
     }

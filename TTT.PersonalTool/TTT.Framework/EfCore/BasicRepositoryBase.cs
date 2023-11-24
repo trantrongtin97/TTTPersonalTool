@@ -1,5 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using TTT.Framework.DbExtensions;
 
 namespace TTT.Framework.EfCore;
@@ -8,6 +11,12 @@ public class BasicRepositoryBase<TEntity> : IBasicRepository<TEntity>, IDisposab
         where TEntity : class, IEntity
 {
     private readonly DbContext _context;
+
+    [Obsolete("Use GetDbConnection method.")]
+    public IDbConnection DbConnection => _context.Database.GetDbConnection();
+
+    [Obsolete("Use GetDbTransaction method.")]
+    public IDbTransaction DbTransaction => _context.Database.CurrentTransaction.GetDbTransaction();
 
     public BasicRepositoryBase(DbContext context)
     {
@@ -115,4 +124,28 @@ public class BasicRepositoryBase<TEntity> : IBasicRepository<TEntity>, IDisposab
         _context.Dispose();
     }
 
+    public async Task<int> ExcuteAsync(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null)
+    {
+        return await DbConnection.ExecuteAsync(sql, para, DbTransaction, commandTimeOut, commandType);
+    }
+
+    public async Task<T> ExecuteScalarAsync<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null)
+    {
+        return await DbConnection.ExecuteScalarAsync<T>(sql, para, DbTransaction, commandTimeOut, commandType);
+    }
+
+    public async Task<IDataReader> ExecuteReaderAsync(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null)
+    {
+        return await DbConnection.ExecuteReaderAsync(sql, para, DbTransaction, commandTimeOut, commandType);
+    }
+
+    public async Task<T> QueryFirtOrDefault<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null)
+    {
+        return await DbConnection.QueryFirstOrDefaultAsync<T>(sql, para, DbTransaction, commandTimeOut, commandType);
+    }
+
+    public async Task<T> QuerySingleOrDefault<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null)
+    {
+        return await DbConnection.QuerySingleOrDefaultAsync<T>(sql, para, DbTransaction, commandTimeOut, commandType);
+    }
 }

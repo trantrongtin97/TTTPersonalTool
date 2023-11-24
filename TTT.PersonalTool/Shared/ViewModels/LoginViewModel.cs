@@ -24,9 +24,6 @@ namespace TTT.PersonalTool.Shared.ViewModels
             _httpClient = httpClient;
         }
 
-        public Task LoginUser() =>
-            _httpClient.PostAsJsonAsync<User>($"user/loginuser?isPersistent={RememberMe}", this);
-
         public async Task<AuthenticationResponse> AuthenticateJWT()
         {
             var authenticationRequest = new AuthenticationRequest

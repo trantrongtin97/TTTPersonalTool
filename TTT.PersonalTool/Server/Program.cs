@@ -23,7 +23,11 @@ builder.Services.AddCors(options =>
             });
 });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper
+    (typeof(PersonalToolProfile).Assembly);
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -102,6 +106,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
+
 app.MapFallbackToFile("index.html");
 #endregion
 

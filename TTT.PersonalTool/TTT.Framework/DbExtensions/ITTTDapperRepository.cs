@@ -11,8 +11,13 @@ internal interface ITTTDapperRepository
     IDbTransaction DbTransaction { get; }
 
     Task<int> ExcuteAsync(string sql,object? para = null, CommandType? commandType = null,int? commandTimeOut = null);
+
     Task<T> ExecuteScalarAsync<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
+
     Task<IDataReader> ExecuteReaderAsync(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
+
     Task<T> QueryFirtOrDefault<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
+
     Task<T> QuerySingleOrDefault<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
+
 }

@@ -9,6 +9,7 @@ namespace TTT.PersonalTool.Shared.ViewModels.Interfaces
         public string Username { get; set; }
         public string Password { get; set; }
         public string ReenterPassword { get; set; }
+        public string TenantCode { get; set; }
         public Task<UserState> RegisterUser();
     }
 }

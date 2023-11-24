@@ -23,6 +23,8 @@ public partial class User : IEntity<int>
     public DateTime? DateOfBirth { get; set; }
     public int? Theme { get; set; }
     public DateTime? CreatedDate { get; set; }
-    [MaxLength(DefineFieldValue.String_Lenght_50)]
+    [MaxLength(DefineFieldValue.String_Lenght_500)]
     public string? Role { get; set; }
+    [MaxLength(DefineFieldValue.String_Lenght_500)]
+    public string? TenantCode { get; set; }
 }

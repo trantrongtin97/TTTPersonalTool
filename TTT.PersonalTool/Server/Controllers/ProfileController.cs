@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TTT.PersonalTool.Contracts.IRepositories;
-using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Models;
 
 namespace TTT.PersonalTool.Server.Controllers
@@ -71,7 +70,7 @@ namespace TTT.PersonalTool.Server.Controllers
              Role = user.Role,
              Theme = user.Theme,
              DateOfBirth = user.DateOfBirth,
-             CreatedDate = user.CreatedDate,
+             CreatedDate = user.CreatedDate
          };
     }
 }

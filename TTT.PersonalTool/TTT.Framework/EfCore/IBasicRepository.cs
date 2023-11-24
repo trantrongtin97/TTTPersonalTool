@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 
 namespace TTT.Framework.EfCore;
@@ -81,4 +82,66 @@ public interface IBasicRepository<TEntity> : IReadOnlyBasicRepository<TEntity>
     /// </summary>
     /// <returns>DbContext ef core</returns>
     DbContext GetContext();
+
+    /// <summary>
+    /// Get DbConnection from DbContext
+    /// </summary>
+    [Obsolete("Use GetDbConnection method.")]
+    IDbConnection DbConnection { get; }
+
+    /// <summary>
+    /// Get DbTransaction from DbContext
+    /// </summary>
+    [Obsolete("Use GetDbTransaction method.")]
+    IDbTransaction DbTransaction { get; }
+
+    /// <summary>
+    /// Execute sql using dapper
+    /// </summary>
+    /// <param name="sql">Raw sql</param>
+    /// <param name="para">Parameter use in sql</param>
+    /// <param name="commandType">Type of command</param>
+    /// <param name="commandTimeOut">Time out of run sql</param>
+    /// <returns>Int number return resutl execute</returns>
+    Task<int> ExcuteAsync(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
+
+    /// <summary>
+    /// Execute sql using dapper
+    /// </summary>
+    /// <param name="sql">Raw sql</param>
+    /// <param name="para">Parameter use in sql</param>
+    /// <param name="commandType">Type of command</param>
+    /// <param name="commandTimeOut">Time out of run sql</param>
+    /// <returns>Generic type T return resutl execute</returns>
+    Task<T> ExecuteScalarAsync<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
+
+    /// <summary>
+    /// Execute sql using dapper
+    /// </summary>
+    /// <param name="sql">Raw sql</param>
+    /// <param name="para">Parameter use in sql</param>
+    /// <param name="commandType">Type of command</param>
+    /// <param name="commandTimeOut">Time out of run sql</param>
+    /// <returns>IDataReader return resutl execute</returns>
+    Task<IDataReader> ExecuteReaderAsync(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
+
+    /// <summary>
+    /// Query sql using dapper
+    /// </summary>
+    /// <param name="sql">Raw sql</param>
+    /// <param name="para">Parameter use in sql</param>
+    /// <param name="commandType">Type of command</param>
+    /// <param name="commandTimeOut">Time out of run sql</param>
+    /// <returns>Generic type T of first resutl from execute sql, If result is nothing, return null</returns>
+    Task<T> QueryFirtOrDefault<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
+
+    /// <summary>
+    /// Query sql using dapper
+    /// </summary>
+    /// <param name="sql">Raw sql</param>
+    /// <param name="para">Parameter use in sql</param>
+    /// <param name="commandType">Type of command</param>
+    /// <param name="commandTimeOut">Time out of run sql</param>
+    /// <returns>Generic type T of singhle resutl from execute sql, If result is nothing, return null</returns>
+    Task<T> QuerySingleOrDefault<T>(string sql, object? para = null, CommandType? commandType = null, int? commandTimeOut = null);
 }
