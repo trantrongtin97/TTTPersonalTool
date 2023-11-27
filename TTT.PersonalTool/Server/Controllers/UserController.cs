@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using TTT.Framework.Sercurity;
-using TTT.PersonalTool.Contracts.IRepositories;
+using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Server.Services.IServices;
 using TTT.PersonalTool.Shared;
 using TTT.PersonalTool.Shared.Const;
 using TTT.PersonalTool.Shared.Dtos;
 using TTT.PersonalTool.Shared.Enums;
-using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Models;
 
 namespace TTT.PersonalTool.Server.Controllers
@@ -42,6 +42,7 @@ namespace TTT.PersonalTool.Server.Controllers
             this._mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpPost("registeruser")]
         public async Task<ActionResult<UserState>> RegisterUser(RegisterDto registerDto)
         {
@@ -59,8 +60,9 @@ namespace TTT.PersonalTool.Server.Controllers
                 user.Role = TTTPermissions.Member;
                 user.CreatedDate = DateTime.UtcNow;
                 user.Theme = StUserTheme.Light;
+                user.Version = $"v1.0";
                 var userIns = await _userRepository.InsertAsync(user, true);
-                if (fla)
+                if (fla  && await _tenantRepository.GetByCode(user.TenantCode) == 0)
                 {
                     await _tenantRepository.InsertAsync(new Tenant()
                     {
@@ -74,6 +76,7 @@ namespace TTT.PersonalTool.Server.Controllers
         }
 
 
+        [AllowAnonymous]
         [HttpPost("authenticatejwt")]
         public async Task<ActionResult<AuthenticationResponse>> AuthenticateJWT(AuthenticationRequest authenticationRequest)
         {
@@ -92,6 +95,7 @@ namespace TTT.PersonalTool.Server.Controllers
             return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
 
+        [AllowAnonymous]
         [HttpPost("getuserbyjwt")]
         public async Task<ActionResult<User>> GetUserByJWT([FromBody] string jwtToken)
         {
@@ -107,14 +111,14 @@ namespace TTT.PersonalTool.Server.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = TTTPermissions.Admin)]
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
         [HttpGet("getallusers")]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
             return await _userRepository.GetListAsync();
         }
 
-        [Authorize(Roles = TTTPermissions.Admin)]
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
         [HttpPut("assignrole")]
         public async Task<ActionResult<int>> AssignRole([FromBody] User user)
         {
@@ -127,7 +131,7 @@ namespace TTT.PersonalTool.Server.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = TTTPermissions.Admin)]
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
         [HttpDelete("deleteuser/{userId}")]
         public async Task<ActionResult<int>> DeleteUser(int userId)
         {

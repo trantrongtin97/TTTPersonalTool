@@ -4,7 +4,7 @@
 @inject IAssignRolesViewModel _assignRolesViewModel
 @inject IToastService _toastService
 @inject NavigationManager _navigationManager
-@attribute [Authorize(Roles = TTTPermissions.Admin)]
+@attribute [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
 
 <h2 class="white-text"><b>Assign Roles</b></h2>
 <hr class="white-horizontal-line" />

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TTT.Framework.EfCore;
-using TTT.PersonalTool.Contracts.IRepositories;
+using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Server.DbContexts;
 using TTT.PersonalTool.Shared.Models;
 
@@ -46,7 +46,8 @@ public class UserRepository : BasicRepositoryBase<User>, IUserRepository
             Username = t.Username,
             Role = t.Role,
             Theme = t.Theme,
-            TenantCode = t.TenantCode
+            TenantCode = t.TenantCode,
+            Version = t.Version
         }).FirstOrDefaultAsync();
     }
 }

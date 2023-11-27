@@ -31,8 +31,9 @@ namespace TTT.PersonalTool.Server.Services
             var claimEmail = new Claim(ClaimTypes.Email, user.Username ?? string.Empty);
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, user.Id.ToString());
             var claimRole = new Claim(ClaimTypes.Role, user.Role == null ? "" : user.Role);
+            var claimVer = new Claim(ClaimTypes.Version, user.Version ?? string.Empty);
 
-            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimRole, claimName, claimSurName }, "serverAuth");
+            var claimsIdentity = new ClaimsIdentity(new[] { claimEmail, claimNameIdentifier, claimRole, claimName, claimSurName, claimVer }, "serverAuth");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claimsIdentity,

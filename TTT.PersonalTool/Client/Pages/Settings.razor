@@ -64,7 +64,7 @@
             {
                 var claim = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier);
                 _settingsViewModel.Id = Convert.ToInt32(claim?.Value);
-                IsUserAuthorized = user.IsInRole(TTTPermissions.Admin) || user.IsInRole(TTTPermissions.Member);
+                IsUserAuthorized = user.IsInRole(TTTPermissions.Admin) || user.IsInRole(TTTPermissions.TTTAdmin);
 
                 await _settingsViewModel.GetProfile();
                 IsLoading = false;

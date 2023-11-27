@@ -1,7 +1,7 @@
 ﻿using TTT.Framework.EfCore;
 using TTT.PersonalTool.Shared.Models;
 
-namespace TTT.PersonalTool.Contracts.IRepositories;
+namespace TTT.PersonalTool.Shared.IRepositories;
 
 public interface IUserRepository : IBasicRepository<User>
 {

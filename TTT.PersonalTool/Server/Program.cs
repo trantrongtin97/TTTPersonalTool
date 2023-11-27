@@ -6,6 +6,10 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using TTT.PersonalTool.Server.DbContexts;
 using TTT.PersonalTool.Server;
+using TTT.PersonalTool.Shared.Const;
+using Microsoft.AspNetCore.Authorization;
+using TTT.PersonalTool.Server.Authorization;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -38,6 +42,7 @@ builder.Services.AddDbContext<DbPersonalToolContext>(options => options.UseSqlSe
 builder.Services.AddDbContextFactory<DbLoggingContext>(options => options.UseSqlServer("Name=Default"));
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,6 +59,36 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false,
         ClockSkew = TimeSpan.Zero
     };
+});
+builder.Services.AddScoped<IAuthorizationHandler, UserVersionHandler>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(nameof(TTTPermissions.Policy_LvFull), policy =>
+    {
+        policy.RequireRole(TTTPermissions.Policy_LvFull);
+        policy.Requirements.Add(new VersionRequirement());
+    });
+
+    options.AddPolicy(nameof(TTTPermissions.Policy_LvEmployee), policy =>
+    {
+        policy.RequireRole(TTTPermissions.Policy_LvEmployee);
+        policy.Requirements.Add(new VersionRequirement());
+    });
+
+
+    options.AddPolicy(nameof(TTTPermissions.Policy_LvManager), policy =>
+    {
+        policy.RequireRole(TTTPermissions.Policy_LvManager);
+        policy.Requirements.Add(new VersionRequirement());
+    });
+
+
+    options.AddPolicy(nameof(TTTPermissions.Policy_LvAdmin), policy =>
+    {
+        policy.RequireRole(TTTPermissions.Policy_LvAdmin);
+        policy.Requirements.Add(new VersionRequirement());
+    });
+          
 });
 
 builder.Services.AddResponseCompression(opts =>

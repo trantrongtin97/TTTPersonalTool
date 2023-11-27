@@ -27,4 +27,6 @@ public partial class User : IEntity<int>
     public string? Role { get; set; }
     [MaxLength(DefineFieldValue.String_Lenght_500)]
     public string? TenantCode { get; set; }
+    [MaxLength(DefineFieldValue.String_Lenght_50)]
+    public string? Version { get; set; }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TTT.PersonalTool.Contracts.IRepositories;
+using TTT.PersonalTool.Shared.IRepositories;
+using TTT.PersonalTool.Shared.Const;
+using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Models;
 
 namespace TTT.PersonalTool.Server.Controllers
@@ -12,14 +14,17 @@ namespace TTT.PersonalTool.Server.Controllers
     {
         private readonly ILogger<ProfileController> logger;
         private readonly IUserRepository _userRepository;
+        private readonly IItemRepository _itemRepository;
 
-        public ProfileController(ILogger<ProfileController> logger, IUserRepository userRepository)
+        public ProfileController(ILogger<ProfileController> logger, IUserRepository userRepository,IItemRepository itemRepository)
         {
             this.logger = logger;
             this._userRepository = userRepository;
+            this._itemRepository = itemRepository;
         }
 
         [HttpPut("updateprofile/{userId}")]
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
         public async Task<ActionResult<User>> UpdateProfile(int userId, [FromBody] User user)
         {
             User? userToUpdate = await _userRepository.GetByIdAsync(userId);
@@ -36,14 +41,17 @@ namespace TTT.PersonalTool.Server.Controllers
         }
 
         [HttpGet("getprofile/{userId}")]
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
         public async Task<ActionResult<User>> GetProfile(int userId)
         {
             User? user = await _userRepository.GetByIdAsync(userId);
+            var test = await _itemRepository.GetListAsync();
             if (user == null) return new User();
             return ToCleanData(user);
         }
 
         [HttpGet("DownloadServerFile")]
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
         public async Task<ActionResult<string>> DownloadServerFile()
         {
             var filePath = @"C:\Data\";

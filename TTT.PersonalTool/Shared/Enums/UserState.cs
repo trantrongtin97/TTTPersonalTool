@@ -2,5 +2,5 @@
 public enum UserState
 {
     Existed,
-    Created,
+    Created
 }

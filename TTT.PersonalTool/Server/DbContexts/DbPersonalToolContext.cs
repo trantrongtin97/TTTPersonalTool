@@ -18,6 +18,7 @@ namespace TTT.PersonalTool.Server.DbContexts
         #region Define Entity
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Tenant> Tenant { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
 
         #endregion
 
@@ -25,6 +26,7 @@ namespace TTT.PersonalTool.Server.DbContexts
         {
             modelBuilder.Entity<Tenant>().HasKey(b => b.Id).HasName("Id");
             modelBuilder.Entity<User>().HasKey(b => b.Id).HasName("Id");
+            modelBuilder.Entity<Item>().HasQueryFilter(x => x.TenantCode == _tenantCode).HasKey(b => b.Id).HasName("Id");
             OnModelCreatingPartial(modelBuilder);
         }
         //.HasQueryFilter(x => x.TenantCode == _tenantCode)

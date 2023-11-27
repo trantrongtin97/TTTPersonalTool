@@ -3,8 +3,7 @@ using TTT.PersonalTool.Shared.Models;
 
 namespace TTT.PersonalTool.Shared.IRepositories
 {
-    public interface ITenantRepository : IBasicRepository<Tenant>
+    public interface IItemRepository : IBasicRepository<Item>
     {
-        public Task<int> GetByCode(string tenantCode);
     }
 }

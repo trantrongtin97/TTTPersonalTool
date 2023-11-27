@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using TTT.PersonalTool.Contracts.IRepositories;
+using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Const;
 using TTT.PersonalTool.Shared.Models;
 
@@ -22,6 +22,7 @@ namespace TTT.PersonalTool.Server.Controllers
         }
 
         [HttpPut("updatetheme/{userId}")]
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
         public async Task<ActionResult<HttpStatusCode>> UpdateTheme(string userId, User user)
         {
             

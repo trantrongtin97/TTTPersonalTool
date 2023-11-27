@@ -68,7 +68,8 @@ namespace TTT.PersonalTool.Shared
             var claimEmail = new Claim(ClaimTypes.Email, currentUser.Username ?? string.Empty);
             var claimNameIdentifier = new Claim(ClaimTypes.NameIdentifier, Convert.ToString(currentUser.Id));
             var claimRole = new Claim(ClaimTypes.Role, currentUser.Role == null ? "" : currentUser.Role);
-            var claimsIdentity = new ClaimsIdentity(new[] { claimName, claimNameIdentifier, claimRole, claimSurName, claimEmail }, "serverAuth");
+            var claimVer = new Claim(ClaimTypes.Version, currentUser.Version ?? string.Empty);
+            var claimsIdentity = new ClaimsIdentity(new[] { claimName, claimNameIdentifier, claimRole, claimSurName, claimEmail, claimVer }, "serverAuth");
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             return claimsPrincipal;
