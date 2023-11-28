@@ -1,5 +1,6 @@
 ﻿
 @inherits LayoutComponentBase
+@inject IStringLocalizer<Resource> localizer
 @inject NavigationManager _navigationManager
 @inject ILoginViewModel _loginViewModel
 @inject IJSRuntime _jsRuntime
@@ -19,9 +20,8 @@
         <div class="top-row px-4">
             <AuthorizeView>
                 <Authorized>
-                    <CultureSelector />
-                    <p class="ttt-user-label"><b>Hello, @context.User?.Identity?.Name</b></p> &nbsp; &nbsp;
-                    <button class="btn btn-danger btn-sm" @onclick="LogoutUser">Logout</button>
+                    <p class="ttt-user-label"><b>Wellcome, @context.User?.Identity?.Name</b></p> &nbsp; &nbsp;
+                    <button class="btn btn-danger btn-sm" @onclick="LogoutUser">@localizer["Logout"]</button>
                 </Authorized>
             </AuthorizeView>
         </div>

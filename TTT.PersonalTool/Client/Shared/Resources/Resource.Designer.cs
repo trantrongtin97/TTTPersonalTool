@@ -61,11 +61,83 @@ namespace TTT.PersonalTool.Client.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Already have an account?.
+        /// </summary>
+        public static string Alreadyhaveanaccount {
+            get {
+                return ResourceManager.GetString("Alreadyhaveanaccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign Roles.
+        /// </summary>
+        public static string AssignRoles {
+            get {
+                return ResourceManager.GetString("AssignRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not allowed to enter here !!!!!!..
+        /// </summary>
+        public static string ContentForbiddenPage {
+            get {
+                return ResourceManager.GetString("ContentForbiddenPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, there&apos;s nothing at this address.!!!!!!..
+        /// </summary>
+        public static string ContentNotFoundPage {
+            get {
+                return ResourceManager.GetString("ContentNotFoundPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your user has been created in the system. Please login with your credential.
+        /// </summary>
+        public static string CreateAccountSuccess {
+            get {
+                return ResourceManager.GetString("CreateAccountSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your user has been existed in the system. Please try again..
+        /// </summary>
+        public static string CreateAccountUserExisted {
+            get {
+                return ResourceManager.GetString("CreateAccountUserExisted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create an account.
         /// </summary>
         public static string Createanaccount {
             get {
                 return ResourceManager.GetString("Createanaccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark Theme.
+        /// </summary>
+        public static string DarkTheme {
+            get {
+                return ResourceManager.GetString("DarkTheme", resourceCulture);
             }
         }
         
@@ -79,11 +151,65 @@ namespace TTT.PersonalTool.Client.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please contact admin to know more detail....
+        /// </summary>
+        public static string ExplainForbiddenPage {
+            get {
+                return ResourceManager.GetString("ExplainForbiddenPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please try another address....
+        /// </summary>
+        public static string ExplainNotFoundPage {
+            get {
+                return ResourceManager.GetString("ExplainNotFoundPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FirstName {
             get {
                 return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Tool is a website of TTT.
+        /// </summary>
+        public static string Intro {
+            get {
+                return ResourceManager.GetString("Intro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items.
+        /// </summary>
+        public static string Items {
+            get {
+                return ResourceManager.GetString("Items", resourceCulture);
             }
         }
         
@@ -106,6 +232,33 @@ namespace TTT.PersonalTool.Client.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete.
+        /// </summary>
+        public static string MsgConfirmDelete {
+            get {
+                return ResourceManager.GetString("MsgConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to save.
+        /// </summary>
+        public static string MsgConfirmSave {
+            get {
+                return ResourceManager.GetString("MsgConfirmSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string Password {
@@ -124,6 +277,42 @@ namespace TTT.PersonalTool.Client.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile info has been saved successfully..
+        /// </summary>
+        public static string ProfileUpdateSuccess {
+            get {
+                return ResourceManager.GetString("ProfileUpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Re-enter Password.
+        /// </summary>
+        public static string ReenterPassword {
+            get {
+                return ResourceManager.GetString("ReenterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role updated successfully.
+        /// </summary>
+        public static string RoleUpdateSuccess {
+            get {
+                return ResourceManager.GetString("RoleUpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
@@ -133,11 +322,83 @@ namespace TTT.PersonalTool.Client.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings have been saved successfully.
+        /// </summary>
+        public static string SettingSaveSuccess {
+            get {
+                return ResourceManager.GetString("SettingSaveSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant Code.
+        /// </summary>
+        public static string TenantCode {
+            get {
+                return ResourceManager.GetString("TenantCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Delete.
+        /// </summary>
+        public static string TitleConfirmDelete {
+            get {
+                return ResourceManager.GetString("TitleConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Save.
+        /// </summary>
+        public static string TitleConfirmSave {
+            get {
+                return ResourceManager.GetString("TitleConfirmSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opps...Forbidden Page!.
+        /// </summary>
+        public static string TitleForbiddenPage {
+            get {
+                return ResourceManager.GetString("TitleForbiddenPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opps...Not Found Page!.
+        /// </summary>
+        public static string TitleNotFoundPage {
+            get {
+                return ResourceManager.GetString("TitleNotFoundPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Username {
             get {
                 return ResourceManager.GetString("Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid username or password.
+        /// </summary>
+        public static string UsernamePasswordInvalid {
+            get {
+                return ResourceManager.GetString("UsernamePasswordInvalid", resourceCulture);
             }
         }
     }

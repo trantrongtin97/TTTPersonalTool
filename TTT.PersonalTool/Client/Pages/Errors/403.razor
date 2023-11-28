@@ -1,12 +1,13 @@
 ﻿@inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject IToastService _toastService
+@inject IStringLocalizer<Resource> localizer
 
 <div class="alert alert-danger" role="alert">
-    <h4 class="alert-heading">Opps...Forbidden Page!</h4>
-    <p>You are not allowed to enter here !!!!!!.</p>
+    <h4 class="alert-heading">@localizer["TitleForbiddenPage"]</h4>
+    <p>@localizer["ContentForbiddenPage"]</p>
     <hr>
-    <p class="mb-0">Please contact admin to know more detail...</p>
+    <p class="mb-0">@localizer["ExplainForbiddenPage"]</p>
 </div>
 
 @code {

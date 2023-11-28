@@ -4,51 +4,71 @@
 @inject IAssignRolesViewModel _assignRolesViewModel
 @inject IToastService _toastService
 @inject NavigationManager _navigationManager
+@inject IStringLocalizer<Resource> localizer
 @attribute [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
 
-<h2 class="white-text"><b>Assign Roles</b></h2>
-<hr class="white-horizontal-line" />
 
-<div class="col-12 row">
-    <input type="text" class="col-12 form-control dark-theme-textbox" placeholder="search" />
-</div>
-<br />
-
-@if (_assignRolesViewModel.AllUsers?.Any() ?? false)
-{
-    foreach (var user in _assignRolesViewModel.AllUsers)
-    {
-        <div class="list-group-item list-group-item-action flex-column align-items-start contact-list-item" style="height: 55px;">
-            <div class="row col-12">
-                <div class="col-6" style="font-size: large;">
-                    @user.Username
-                </div>
-                <div class="col-3">
-                    <select class="form-control" 
-                            name="roles" 
-                            id="roles" 
-                            @onchange="@AssignRole">
-                        <option value=@($"#{user.Id}")>None</option>
-                        <option value=@($"{TTTPermissions.Admin}#{user.Id}") selected="@(user.Role==TTTPermissions.Admin)">Admin</option>
-                        <option value=@($"{TTTPermissions.Member}#{user.Id}") selected="@(user.Role ==TTTPermissions.Member)">General</option>
-                    </select>
-                </div>
-                <div class="col-3">
-                    <button class="btn btn-danger" @onclick="@(() => DeleteUser(user.Id))">Delete</button>
-                </div>
+<SpinLoader IsLoading="IsLoading">
+    <LoadingTemplate>
+        <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
+            <br /><br />
+            <Chase Center="true" Color="blue" Size="70px"></Chase>
+        </div>
+    </LoadingTemplate>
+    <ContentTemplate>
+        <div class="card">
+            <div class="card-header">
+                <strong>@localizer["AssignRoles"]</strong>
+            </div>
+            <div class="card-body">
+                @if (_assignRolesViewModel.AllUsers?.Any() ?? false)
+                {
+                    foreach (var user in _assignRolesViewModel.AllUsers)
+                    {
+                        <div class="list-group-item list-group-item-action flex-column align-items-start contact-list-item" style="height: 55px;">
+                            <div class="row col-12">
+                                <div class="col-6" style="font-size: large;">
+                                    @user.Username
+                                </div>
+                                <div class="col-3">
+                                    <select class="form-control"
+                                            name="roles"
+                                            id="roles"
+                                    @onchange="@AssignRole">
+                                        <option value=@($"#{user.Id}")>None</option>
+                                        @{
+                                            foreach (var role in _assignRolesViewModel.AllRoles)
+                                            {
+                                                <option value=@($"{role}#{user.Id}") selected="@(user.Role==role)">@role</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-danger" @onclick="() =>Delete_Click(user.Id)">@localizer["Delete"]</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                
             </div>
         </div>
-    }
-}
-<br />
+        <TTT.PersonalTool.Client.Components.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"
+                                                                                             ConfirmationMessage="@localizer["MsgConfirmDelete"]" ConfirmationTitle=@localizer["TitleConfirmDelete"]/>
+    </ContentTemplate>
+</SpinLoader>
 
 @code {
+    private bool IsLoading { get; set; } = true;
     [CascadingParameter]
     public Error Error { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
         await _assignRolesViewModel.LoadAllUsers();
+        await _assignRolesViewModel.LoadAllRole();
+        IsLoading = false;
     }
 
     private async Task DeleteUser(int userId)
@@ -65,12 +85,32 @@
         try
         {
             await _assignRolesViewModel.AssignRole(rs, selectedValues[0]);
-            _toastService.ShowSuccess("Role updated successfully");
+            _toastService.ShowSuccess(localizer["RoleUpdateSuccess"]);
         }
         catch (Exception ex)
         {
             await Error.ProcessError(ex);
         }
 
+    }
+
+    protected TTT.PersonalTool.Client.Components.ConfirmDelete DeleteConfirmation { get; set; }
+    private int tempid { get; set; }
+    protected void Delete_Click(int id)
+    {
+        tempid = id;
+        DeleteConfirmation.Show();
+    }
+
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            await DeleteUser(tempid);
+        }
+        else
+        {
+            tempid = 0;
+        }
     }
 }

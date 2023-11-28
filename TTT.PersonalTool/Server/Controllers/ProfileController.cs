@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Const;
 using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Models;
@@ -14,13 +13,11 @@ namespace TTT.PersonalTool.Server.Controllers
     {
         private readonly ILogger<ProfileController> logger;
         private readonly IUserRepository _userRepository;
-        private readonly IItemRepository _itemRepository;
 
-        public ProfileController(ILogger<ProfileController> logger, IUserRepository userRepository,IItemRepository itemRepository)
+        public ProfileController(ILogger<ProfileController> logger, IUserRepository userRepository)
         {
             this.logger = logger;
             this._userRepository = userRepository;
-            this._itemRepository = itemRepository;
         }
 
         [HttpPut("updateprofile/{userId}")]
@@ -45,7 +42,6 @@ namespace TTT.PersonalTool.Server.Controllers
         public async Task<ActionResult<User>> GetProfile(int userId)
         {
             User? user = await _userRepository.GetByIdAsync(userId);
-            var test = await _itemRepository.GetListAsync();
             if (user == null) return new User();
             return ToCleanData(user);
         }

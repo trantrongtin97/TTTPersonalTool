@@ -1,0 +1,62 @@
+﻿@page "/items"
+@inject IItemViewModel _itemViewModel
+@inject IToastService _toastService
+@inject NavigationManager _navigationManager
+@inject IStringLocalizer<Resource> localizer
+@attribute [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
+
+
+<SpinLoader IsLoading="IsLoading">
+    <LoadingTemplate>
+        <div class="col-12" style="background-color: lightgray; height:400px; vertical-align:middle">
+            <br /><br />
+            <Chase Center="true" Color="blue" Size="70px"></Chase>
+        </div>
+    </LoadingTemplate>
+    <ContentTemplate>
+        <div class="card">
+            <div class="card-header">
+                <strong>@localizer["Items"]</strong>
+            </div>
+            <div class="card-body">
+                @* <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach(var i in _itemViewModel.AllItems)
+                            {
+                                <tr>
+                                    <td>@i.Id</td>
+                                    <td>@i.Name</td>
+                                    <td>@i.Price</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table> *@
+                <TTT.PersonalTool.Client.Components.CustomTable Datas="@_itemViewModel.AllItems.ToList()" ShowColumns="@Colums" />
+            </div>
+        </div>
+    </ContentTemplate>
+</SpinLoader>
+
+@code {
+    private bool IsLoading { get; set; } = true;
+    [CascadingParameter]
+    public Error Error { get; set; } = default!;
+
+    public string[] Colums { get; set; } = {"Id" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _itemViewModel.GetListItem();
+        IsLoading = false;
+    }
+
+}

@@ -1,15 +1,7 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
-using TTT.PersonalTool.Server.DbContexts;
 using TTT.PersonalTool.Server;
-using TTT.PersonalTool.Shared.Const;
-using Microsoft.AspNetCore.Authorization;
-using TTT.PersonalTool.Server.Authorization;
-using Polly;
+using TTT.PersonalTool.Server.DbContexts;
 
 var builder = WebApplication.CreateBuilder(args);
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -30,66 +22,16 @@ builder.Services.AddCors(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 
-builder.Services.AddAutoMapper
-    (typeof(PersonalToolProfile).Assembly);
-
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "TTT.PersonalTool.WebAPI", Version = "v1" });
-});
+builder.Services.AddTTTSwaggerServices();
 
 builder.Services.AddDbContext<DbPersonalToolContext>(options => options.UseSqlServer("Name=Default"));
 builder.Services.AddDbContextFactory<DbLoggingContext>(options => options.UseSqlServer("Name=Default"));
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(jwtBearerOptions =>
-{
-    jwtBearerOptions.RequireHttpsMetadata = true;
-    jwtBearerOptions.SaveToken = true;
-    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["JWTSettings:SecretKey"])),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ClockSkew = TimeSpan.Zero
-    };
-});
-builder.Services.AddScoped<IAuthorizationHandler, UserVersionHandler>();
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy(nameof(TTTPermissions.Policy_LvFull), policy =>
-    {
-        policy.RequireRole(TTTPermissions.Policy_LvFull);
-        policy.Requirements.Add(new VersionRequirement());
-    });
+builder.Services.TTTAuthentication(builder.Configuration["JWTSettings:SecretKey"]);
 
-    options.AddPolicy(nameof(TTTPermissions.Policy_LvEmployee), policy =>
-    {
-        policy.RequireRole(TTTPermissions.Policy_LvEmployee);
-        policy.Requirements.Add(new VersionRequirement());
-    });
-
-
-    options.AddPolicy(nameof(TTTPermissions.Policy_LvManager), policy =>
-    {
-        policy.RequireRole(TTTPermissions.Policy_LvManager);
-        policy.Requirements.Add(new VersionRequirement());
-    });
-
-
-    options.AddPolicy(nameof(TTTPermissions.Policy_LvAdmin), policy =>
-    {
-        policy.RequireRole(TTTPermissions.Policy_LvAdmin);
-        policy.Requirements.Add(new VersionRequirement());
-    });
-          
-});
+builder.Services.TTTAuthorization();
 
 builder.Services.AddResponseCompression(opts =>
 {
@@ -99,7 +41,9 @@ builder.Services.AddResponseCompression(opts =>
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddPersonalTool();
+builder.Services.AddTTTCoreService();
+builder.Services.TTTRegisterRepository("TTT.PersonalTool.Shared.IRepositories");
+builder.Services.TTTAddAutoMapper();
 
 builder.Services.AddRazorPages();
 #endregion

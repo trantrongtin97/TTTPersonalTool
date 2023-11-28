@@ -1,9 +1,10 @@
-﻿
+﻿@inject IStringLocalizer<Resource> localizer
+
 <div class="alert alert-warning" role="alert">
-    <h4 class="alert-heading">Opps...Not Found Page!</h4>
-    <p>Sorry, there's nothing at this address.!!!!!!.</p>
+    <h4 class="alert-heading">@localizer["TitleNotFoundPage"]</h4>
+    <p>@localizer["ContentNotFoundPage"]</p>
     <hr>
-    <p class="mb-0">Please try another address...</p>
+    <p class="mb-0">@localizer["ExplainNotFoundPage"]</p>
 </div>
 
 @code {

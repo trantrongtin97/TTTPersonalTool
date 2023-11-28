@@ -1,5 +1,6 @@
 ﻿@page "/createaccount"
 
+@inject IStringLocalizer<Resource> localizer
 @inject IRegisterViewModel _registerViewModel
 @inject NavigationManager _navigationManager
 @inject IToastService _toastService
@@ -14,46 +15,46 @@
     <ContentTemplate>
         <div class="card">
             <div class="card-header">
-                <strong>Register</strong>
+                <strong>@localizer["Register"]</strong>
             </div>
             <div class="card-body">
                 <EditForm Model="@_registerViewModel" OnValidSubmit="@RegisterUser">
                     <DataAnnotationsValidator />
                     @* <ValidationSummary /> *@
                     <div class="col-xl-6 col-md-8 col-12">
-                        <input type="text" @bind="_registerViewModel.FirstName" placeholder="first name" class="form-control dark-theme-textbox">
+                        <input type="text" @bind="_registerViewModel.FirstName" placeholder="@localizer["FirstName"]" class="form-control dark-theme-textbox">
                         <ValidationMessage For="@(()=>_registerViewModel.FirstName)" />
                     </div>
                     <br />
                     <div class="col-xl-6 col-md-8 col-12">
-                        <input type="text" @bind="_registerViewModel.LastName" placeholder="last name" class="form-control dark-theme-textbox">
+                        <input type="text" @bind="_registerViewModel.LastName" placeholder="@localizer["LastName"]" class="form-control dark-theme-textbox">
                         <ValidationMessage For="@(()=>_registerViewModel.LastName)" />
                     </div>
                     <br />
                     <div class="col-xl-6 col-md-8 col-12">
-                        <input type="text" @bind="_registerViewModel.Username" placeholder="User Name" class="form-control dark-theme-textbox" autocomplete="new-username">
+                        <input type="text" @bind="_registerViewModel.Username" placeholder="@localizer["Username"]" class="form-control dark-theme-textbox" autocomplete="new-username">
                         <ValidationMessage For="@(()=>_registerViewModel.Username)" />
                     </div>
                     <br />
                     <div class="col-xl-6 col-md-8 col-12">
-                        <input type="password" @bind="_registerViewModel.Password" placeholder="password" class="form-control dark-theme-textbox" autocomplete="new-password">
+                        <input type="password" @bind="_registerViewModel.Password" placeholder="@localizer["Password"]" class="form-control dark-theme-textbox" autocomplete="new-password">
                         <ValidationMessage For="@(()=>_registerViewModel.Password)" />
                     </div>
                     <br />
                     <div class="col-xl-6 col-md-8 col-12">
-                        <input type="password" @bind="_registerViewModel.ReenterPassword" placeholder="Re-enter Password" class="form-control dark-theme-textbox">
+                        <input type="password" @bind="_registerViewModel.ReenterPassword" placeholder="@localizer["ReenterPassword"]" class="form-control dark-theme-textbox">
                         <ValidationMessage For="@(()=>_registerViewModel.ReenterPassword)" />
                     </div>
                     <br />
                     <div class="col-xl-6 col-md-8 col-12">
-                        <input type="text" @bind="_registerViewModel.TenantCode" placeholder="TenantCode" class="form-control dark-theme-textbox">
+                        <input type="text" @bind="_registerViewModel.TenantCode" placeholder="@localizer["TenantCode"]" class="form-control dark-theme-textbox">
                         <ValidationMessage For="@(()=>_registerViewModel.TenantCode)" />
                     </div>
                     <br />
                     <div class="col-xl-6 col-md-8 col-12">
-                        <button type="submit" class="btn btn-danger">Register</button>
+                        <button type="submit" class="btn btn-danger">@localizer["Register"]</button>
                         &nbsp;
-                        <a style="font-weight: bold;" href="/">Already have an account?</a>
+                        <a style="font-weight: bold;" href="/">@localizer["Alreadyhaveanaccount"]</a>
                     </div>
                 </EditForm>
                 <hr class="white-horizontal-line" />
@@ -72,12 +73,12 @@
         IsLoading = false;
         if (UserState.Created == rs)
         {
-            _toastService.ShowSuccess("Your user has been created in the system. Please login with your credentials");
+            _toastService.ShowSuccess(localizer["CreateAccountSuccess"]);
             _navigationManager.NavigateTo($"/{true}");
         }
         else if (UserState.Existed == rs)
         {
-            _toastService.ShowWarning("Your user has been existed in the system. Please try again.");
+            _toastService.ShowWarning(localizer["CreateAccountUserExisted"]);
         }
 
         

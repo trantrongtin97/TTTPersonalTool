@@ -8,7 +8,8 @@ namespace TTT.PersonalTool.Server
     {
         public PersonalToolProfile()
         {
-            CreateMap<RegisterDto, User>();
+            CreateMap<RegisterDto, User>().ReverseMap();
+            CreateMap<ItemDto,Item>().ReverseMap();
         }
     }
 }

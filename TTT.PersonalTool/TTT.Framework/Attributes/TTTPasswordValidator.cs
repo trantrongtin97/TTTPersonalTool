@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace TTT.Framework.Attributes
 {
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class TTTPasswordValidator : ValidationAttribute
     {
         public string Display { get; set; } = string.Empty;

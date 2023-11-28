@@ -45,6 +45,7 @@ namespace TTT.PersonalTool.Client.Extensions
             services.AddHttpClient<ILoginViewModel, LoginViewModel>("LoginViewModelClient", clientConfigurator);
             services.AddHttpClient<IRegisterViewModel, RegisterViewModel>("RegisterViewModelClient", clientConfigurator);
             services.AddHttpClient<IAssignRolesViewModel, AssignRolesViewModel>("AssignRolesViewModel", clientConfigurator);
+            services.AddHttpClient<IItemViewModel, ItemViewModel>("ItemViewModelClient", clientConfigurator);
 
             // logging
             services.AddLogging(logging => logging.SetMinimumLevel(LogLevel.Error));

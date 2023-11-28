@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.PersonalTool.Client", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.PersonalTool.Shared", "Shared\TTT.PersonalTool.Shared.csproj", "{E9EAF987-DD61-45DD-8531-A82EB7C4FC9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTT.Framework", "TTT.Framework\TTT.Framework.csproj", "{DFB4FFC0-6EA8-4A30-960F-68BEB0D8606B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.Framework", "TTT.Framework\TTT.Framework.csproj", "{DFB4FFC0-6EA8-4A30-960F-68BEB0D8606B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

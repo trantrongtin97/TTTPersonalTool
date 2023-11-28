@@ -117,14 +117,59 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Alreadyhaveanaccount" xml:space="preserve">
+    <value>Already have an account?</value>
+  </data>
+  <data name="AssignRoles" xml:space="preserve">
+    <value>Assign Roles</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ContentForbiddenPage" xml:space="preserve">
+    <value>You are not allowed to enter here !!!!!!.</value>
+  </data>
+  <data name="ContentNotFoundPage" xml:space="preserve">
+    <value>Sorry, there's nothing at this address.!!!!!!.</value>
+  </data>
+  <data name="CreateAccountSuccess" xml:space="preserve">
+    <value>Your user has been created in the system. Please login with your credential</value>
+  </data>
+  <data name="CreateAccountUserExisted" xml:space="preserve">
+    <value>Your user has been existed in the system. Please try again.</value>
+  </data>
   <data name="Createanaccount" xml:space="preserve">
     <value>Create an account</value>
+  </data>
+  <data name="Culture" xml:space="preserve">
+    <value>Culture</value>
+  </data>
+  <data name="DarkTheme" xml:space="preserve">
+    <value>Dark Theme</value>
   </data>
   <data name="DateOfBirth" xml:space="preserve">
     <value>Date Of Birth</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ExplainForbiddenPage" xml:space="preserve">
+    <value>Please contact admin to know more detail...</value>
+  </data>
+  <data name="ExplainNotFoundPage" xml:space="preserve">
+    <value>Please try another address...</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>First Name</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Intro" xml:space="preserve">
+    <value>Personal Tool is a website of TTT</value>
+  </data>
+  <data name="Items" xml:space="preserve">
+    <value>Items</value>
   </data>
   <data name="LastName" xml:space="preserve">
     <value>Last Name</value>
@@ -132,16 +177,61 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="MsgConfirmDelete" xml:space="preserve">
+    <value>Are you sure you want to delete</value>
+  </data>
+  <data name="MsgConfirmSave" xml:space="preserve">
+    <value>Are you sure you want to save</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="ProfileUpdateSuccess" xml:space="preserve">
+    <value>Profile info has been saved successfully.</value>
+  </data>
+  <data name="ReenterPassword" xml:space="preserve">
+    <value>Re-enter Password</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="RoleUpdateSuccess" xml:space="preserve">
+    <value>Role updated successfully</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingSaveSuccess" xml:space="preserve">
+    <value>Settings have been saved successfully</value>
+  </data>
+  <data name="TenantCode" xml:space="preserve">
+    <value>Tenant Code</value>
+  </data>
+  <data name="TitleConfirmDelete" xml:space="preserve">
+    <value>Confirm Delete</value>
+  </data>
+  <data name="TitleConfirmSave" xml:space="preserve">
+    <value>Confirm Save</value>
+  </data>
+  <data name="TitleForbiddenPage" xml:space="preserve">
+    <value>Opps...Forbidden Page!</value>
+  </data>
+  <data name="TitleNotFoundPage" xml:space="preserve">
+    <value>Opps...Not Found Page!</value>
+  </data>
   <data name="Username" xml:space="preserve">
     <value>Username</value>
+  </data>
+  <data name="UsernamePasswordInvalid" xml:space="preserve">
+    <value>Invalid username or password</value>
   </data>
 </root>

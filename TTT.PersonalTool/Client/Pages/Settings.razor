@@ -5,6 +5,7 @@
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _jsRuntime
 @inject IToastService _toastService
+@inject IStringLocalizer<Resource> localizer
 
 @attribute [Authorize]
 
@@ -18,16 +19,19 @@
     <ContentTemplate>
         <div class="card">
             <div class="card-header">
-                <strong>Settings</strong>
+                <strong>@localizer["Settings"]</strong>
             </div>
             <div class="card-body">
                 <form>
                     <div class="form-group-row align-items-center">
-                        <div class="col-auto">
+                        <div class="col-auto" hidden="@(!IsUserAuthorized)">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" Disabled="@(!IsUserAuthorized)" @bind="@_settingsViewModel.Theme">
-                                <label class="ttt-label-form" style="margin-top:5px; margin-left:2px;">Dark Theme</label>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" @bind="@_settingsViewModel.Theme">
+                                <label class="ttt-label-form" style="margin-top:5px; margin-left:2px;">@localizer["DarkTheme"]</label>
                             </div>
+                        </div>
+                        <div class="col-auto">
+                            <CultureSelector />
                         </div>
                     </div>
                     <hr />
@@ -38,7 +42,7 @@
             </div>
         </div>
         <TTT.PersonalTool.Client.Components.ConfirmSave @ref="SaveConfirmation" ConfirmationChanged="ConfirmSave_Click"
-             ConfirmationMessage="Are you sure you want to save" ConfirmationTitle="Confirm Save" />
+                                                        ConfirmationMessage="@localizer["MsgConfirmSave"]" ConfirmationTitle=@localizer["TitleConfirmSave"] />
     </ContentTemplate>
 </SpinLoader>
 <br />
@@ -94,7 +98,7 @@
     private async Task SaveSettings()
     {
         await UpdateTheme(); 
-        _toastService.ShowSuccess("Settings have been saved successfully");
+        _toastService.ShowSuccess(localizer["SettingSaveSuccess"]);
     }
 
 

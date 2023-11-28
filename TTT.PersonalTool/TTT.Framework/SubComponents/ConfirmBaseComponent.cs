@@ -2,7 +2,7 @@
 
 namespace TTT.Framework.SubComponents
 {
-    public class ConfirmBase : ComponentBase
+    public class ConfirmBaseComponent : ComponentBase
     {
         protected bool ShowConfirmation { get; set; }
 

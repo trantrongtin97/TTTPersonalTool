@@ -44,14 +44,14 @@
                             </div>
                             <br/>
                             <div>
-                                <a style="font-weight: bold;" href="/createaccount">Create an account</a>
+                                <a style="font-weight: bold;" href="/createaccount">@localizer["Createanaccount"]</a>
                             </div>
                         </div>
                     </EditForm>
                     <hr class="white-horizontal-line" />
                     <div class="col-12">
                         <p style="font-size: larger;" class="white-text">
-                            Personal Tool is a website of TTT
+                            @localizer["Intro"]
                         </p>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
         }
         else
         {
-            _toastService.ShowError("Invalid username or password");
+            _toastService.ShowError(localizer["UsernamePasswordInvalid"]);
         }
         IsLoading = false;
     }

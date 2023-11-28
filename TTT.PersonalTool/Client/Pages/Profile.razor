@@ -135,6 +135,6 @@
     private async Task UpdateProfile()
     {
         await _profileViewModel.UpdateProfile();
-        _toastService.ShowSuccess("Profile info has been saved successfully.");
+        _toastService.ShowSuccess(localizer["ProfileUpdateSuccess"]);
     }
 }

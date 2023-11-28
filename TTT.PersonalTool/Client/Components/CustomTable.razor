@@ -1,0 +1,30 @@
+﻿@inject IStringLocalizer<Resource> localizer
+@inherits TableBaseComponent
+<table class="table">
+    <thead>
+        <tr>
+            @{
+                foreach (var c in ShowColumns)
+                {
+                    <th scope="col">@c</th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var i in Datas)
+            {
+                <tr>
+                    @{
+                        foreach(var c in ShowColumns)
+                        {
+                            <td>@i.GetType().GetField(c)?.GetValue(null)</td>
+                        }
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

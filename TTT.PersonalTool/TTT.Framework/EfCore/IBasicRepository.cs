@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace TTT.Framework.EfCore;
 
-public interface IBasicRepository<TEntity> : IReadOnlyBasicRepository<TEntity>, IRepository
+public interface IBasicRepository<TEntity> : IReadOnlyBasicRepository<TEntity>, ITTTRepository
     where TEntity : class, IEntity
 {
     /// <summary>

@@ -8,6 +8,7 @@ namespace TTT.PersonalTool.Shared.ViewModels
     public class AssignRolesViewModel : IAssignRolesViewModel
     {
         public IEnumerable<User> AllUsers { get; private set; } = new List<User>();
+        public IEnumerable<string> AllRoles { get; private set; } = new List<string>();
 
         private readonly HttpClient _httpClient;
         private readonly IAccessTokenService _accessTokenService;
@@ -35,6 +36,12 @@ namespace TTT.PersonalTool.Shared.ViewModels
         {
             var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
             int result = await _httpClient.DeleteAsync($"user/deleteuser/{userId}", jwtToken);
+        }
+
+        public async Task LoadAllRole()
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            AllRoles = await _httpClient.GetAsync<List<string>>("user/getallroles", jwtToken);
         }
     }
 }

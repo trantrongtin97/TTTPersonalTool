@@ -13,10 +13,10 @@ public class UserRepository : BasicRepositoryBase<User>, IUserRepository
     {
         _context = context;
     }
-
-    public override async Task<List<User>> GetListAsync()
+    public async Task<List<User>> GetListDependUserAsync(int userid)
     {
-        return await _context.Users.Select(t => new User
+        var currUser = await _context.Users.FindAsync(userid);
+        return await _context.Users.Where(t=>t.TenantCode == currUser.TenantCode).Select(t => new User
         {
             Id = t.Id,
             Username = t.Username,

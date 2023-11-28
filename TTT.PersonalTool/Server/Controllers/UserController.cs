@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 using TTT.Framework.Sercurity;
-using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Server.Services.IServices;
 using TTT.PersonalTool.Shared;
 using TTT.PersonalTool.Shared.Const;
 using TTT.PersonalTool.Shared.Dtos;
 using TTT.PersonalTool.Shared.Enums;
+using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Models;
 
 namespace TTT.PersonalTool.Server.Controllers
@@ -115,7 +114,16 @@ namespace TTT.PersonalTool.Server.Controllers
         [HttpGet("getallusers")]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
-            return await _userRepository.GetListAsync();
+            var userid = await _systermTTT.GetIDRequestUser(HttpContext);
+            return await _userRepository.GetListDependUserAsync(userid);
+        }
+
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
+        [HttpGet("getallroles")]
+        public async Task<ActionResult<List<string>>> GetAllRoles()
+        {
+            return typeof(TTTPermissions).GetFields()
+              .Where(f => !f.Name.Contains("Policy") && f.Name != nameof(TTTPermissions.TTTAdmin) && f.Name != nameof(TTTPermissions.Root)).Select(t=>(string)t.GetValue(null)).ToList();
         }
 
         [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
