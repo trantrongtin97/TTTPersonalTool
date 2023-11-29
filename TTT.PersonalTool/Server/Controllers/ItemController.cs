@@ -37,5 +37,15 @@ namespace TTT.PersonalTool.Server.Controllers
             var lsItem = await _itemRepository.GetListAsync();
             return _mapper.Map<List<ItemDto>>(lsItem);
         }
+
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
+        [HttpDelete("deleteitem/{id}")]
+        public async Task<int> DeleteItem(int id)
+        {
+            var item = await _itemRepository.GetByIdAsync(id);
+            if(item ==null) return 0;
+            await _itemRepository.DeleteAsync(item,true);
+            return 1;
+        }
     }
 }

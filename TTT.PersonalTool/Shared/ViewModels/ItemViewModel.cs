@@ -31,5 +31,10 @@ namespace TTT.PersonalTool.Shared.ViewModels
             AllItems = await _httpClient.GetAsync<List<ItemDto>>($"item/getallitem", jwtToken);
         }
 
+        public async Task DeleteItem(int id)
+        {
+            var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
+            await _httpClient.DeleteAsync($"item/deleteitem/{id}", jwtToken);
+        }
     }
 }

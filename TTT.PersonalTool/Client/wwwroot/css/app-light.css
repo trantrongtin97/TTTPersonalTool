@@ -120,7 +120,8 @@ a, .btn-link {
 }
 
 #ttt-btn-grd {
-    width: 30%;
+    width: 75px;
+    font-size: 14px;
 }
 
 

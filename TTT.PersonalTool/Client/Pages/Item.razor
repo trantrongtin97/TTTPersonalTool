@@ -39,6 +39,7 @@
 
 @code {
     private bool IsLoading { get; set; } = true;
+
     [CascadingParameter]
     public Error Error { get; set; } = default!;
 
@@ -51,7 +52,9 @@
     protected TTT.PersonalTool.Client.Components.CustomTable<ItemDto> CustomTable { get; set; }
     protected async Task DeleteItemInGrid(int idItem)
     {
-        var a = idItem;
+        await _itemViewModel.DeleteItem(idItem);
+        await _itemViewModel.GetListItem();
+        StateHasChanged();
     }
 
     protected async Task EditItemInGrid(int idItem)

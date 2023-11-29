@@ -10,4 +10,5 @@ public interface IItemViewModel
     //public double? Price { get; set; }
     public IEnumerable<ItemDto> AllItems { get; }
     public Task GetListItem();
+    public Task DeleteItem(int id);
 }
