@@ -1,30 +1,66 @@
-﻿@inject IStringLocalizer<Resource> localizer
+﻿@using System.Diagnostics.CodeAnalysis;
+@inject IStringLocalizer<Resource> localizer
 @inherits TableBaseComponent
-<table class="table">
+@typeparam TItem
+
+
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
-            @{
-                foreach (var c in ShowColumns)
-                {
-                    <th scope="col">@c</th>
-                }
-            }
+            @TableHeader
+            <th scope="col">....</th>
         </tr>
     </thead>
     <tbody>
-        @{
-            foreach (var i in Datas)
+        @foreach (var item in Items)
+        {
+            if (RowTemplate is not null)
             {
                 <tr>
-                    @{
-                        foreach(var c in ShowColumns)
-                        {
-                            <td>@i.GetType().GetField(c)?.GetValue(null)</td>
-                        }
-                    }
+                    @RowTemplate(item)
+                    <td style="width:20%">
+                        <button class="btn btn-outline-danger" id="ttt-btn-grd"> @localizer["Edit"]</button>
+                        <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>GetObject_Click(item)">@localizer["Delete"]</button>
+                    </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+<TTT.PersonalTool.Client.Components.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"
+                                                  ConfirmationMessage="@localizer["MsgConfirmDelete"]" ConfirmationTitle=@localizer["TitleConfirmDelete"] />
+@code{
+    [Parameter]
+    public RenderFragment? TableHeader { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem>? RowTemplate { get; set; }
+
+    [Parameter, AllowNull]
+    public IEnumerable<TItem> Items { get; set; }
+
+
+    private int SelectedID { get; set; }
+
+    protected TTT.PersonalTool.Client.Components.ConfirmDelete DeleteConfirmation { get; set; }
+
+    protected void GetObject_Click(object obj)
+    {
+        int.TryParse($"{obj.GetType().GetProperty("Id")?.GetValue(obj)}", out int rs);
+        SelectedID = rs;
+        DeleteConfirmation.Show();
+    }
+
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            await ActionDelete.InvokeAsync(SelectedID);
+        }
+        else
+        {
+            SelectedID = 0;
+        }
+    }
+}
 

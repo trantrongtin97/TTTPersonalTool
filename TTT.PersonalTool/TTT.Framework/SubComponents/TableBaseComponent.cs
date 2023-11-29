@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TTT.Framework.SubComponents
 {
     public class TableBaseComponent : ComponentBase
     {
         [Parameter]
-        public List<object> Datas { get; set; } = new List<object>();
+        public EventCallback<int> ActionDelete { get; set; }
 
         [Parameter]
-        public string[] ShowColumns { get; set; } = { "Id" };
-
+        public EventCallback<int> ActionEdit { get; set; }
     }
 }

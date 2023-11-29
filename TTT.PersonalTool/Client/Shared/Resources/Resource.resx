@@ -153,6 +153,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="ExplainForbiddenPage" xml:space="preserve">
     <value>Please contact admin to know more detail...</value>
   </data>

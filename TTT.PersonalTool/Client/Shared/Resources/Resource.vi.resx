@@ -153,6 +153,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Xóa</value>
   </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
   <data name="ExplainForbiddenPage" xml:space="preserve">
     <value>Liên hệ với admin để biết thêm chi tiết !</value>
   </data>

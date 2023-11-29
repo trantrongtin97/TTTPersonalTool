@@ -48,6 +48,7 @@
 
 .ttt-item-menu {
     font-size: 0.75rem;
+    margin-left: 5px;
 }
 
 .ttt-user-label {
@@ -87,10 +88,10 @@
             color: white;
         }
 
-.oi {
-    width: 2rem;
+.fa {
+    width: 4rem;
     font-size: 1.1rem;
-    vertical-align: text-top;
+    vertical-align: text-bottom;
     top: -2px;
     color: black;
 }
@@ -118,10 +119,8 @@ a, .btn-link {
     color: #0071c1;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+#ttt-btn-grd {
+    width: 30%;
 }
 
 

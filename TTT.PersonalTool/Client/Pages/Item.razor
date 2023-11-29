@@ -1,4 +1,5 @@
 ﻿@page "/items"
+@using TTT.PersonalTool.Shared.Dtos;
 @inject IItemViewModel _itemViewModel
 @inject IToastService _toastService
 @inject NavigationManager _navigationManager
@@ -19,28 +20,18 @@
                 <strong>@localizer["Items"]</strong>
             </div>
             <div class="card-body">
-                @* <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            foreach(var i in _itemViewModel.AllItems)
-                            {
-                                <tr>
-                                    <td>@i.Id</td>
-                                    <td>@i.Name</td>
-                                    <td>@i.Price</td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table> *@
-                <TTT.PersonalTool.Client.Components.CustomTable Datas="@_itemViewModel.AllItems.ToList()" ShowColumns="@Colums" />
+                <TTT.PersonalTool.Client.Components.CustomTable Items="_itemViewModel.AllItems" Context="item" ActionDelete="DeleteItemInGrid" ActionEdit="EditItemInGrid">
+                    <TableHeader>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                    </TableHeader>
+                    <RowTemplate>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.Price</td>
+                    </RowTemplate>
+                </TTT.PersonalTool.Client.Components.CustomTable>
             </div>
         </div>
     </ContentTemplate>
@@ -51,12 +42,20 @@
     [CascadingParameter]
     public Error Error { get; set; } = default!;
 
-    public string[] Colums { get; set; } = {"Id" };
-
     protected override async Task OnInitializedAsync()
     {
         await _itemViewModel.GetListItem();
         IsLoading = false;
     }
 
+    protected TTT.PersonalTool.Client.Components.CustomTable<ItemDto> CustomTable { get; set; }
+    protected async Task DeleteItemInGrid(int idItem)
+    {
+        var a = idItem;
+    }
+
+    protected async Task EditItemInGrid(int idItem)
+    {
+        var a = idItem;
+    }
 }

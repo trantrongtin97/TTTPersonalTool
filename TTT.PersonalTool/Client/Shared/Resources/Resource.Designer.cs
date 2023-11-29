@@ -160,6 +160,15 @@ namespace TTT.PersonalTool.Client.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please contact admin to know more detail....
         /// </summary>
         public static string ExplainForbiddenPage {

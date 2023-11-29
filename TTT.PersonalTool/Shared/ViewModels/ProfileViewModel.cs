@@ -57,7 +57,6 @@ namespace TTT.PersonalTool.Shared.ViewModels
             Password = profileViewModel.Password;
             DateOfBirth = profileViewModel.DateOfBirth;
             ProfilePicDataUrl = profileViewModel.ProfilePicDataUrl;
-            //add more fields
         }
 
         public static implicit operator ProfileViewModel(User user) =>

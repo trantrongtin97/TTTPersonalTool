@@ -21,7 +21,7 @@
             <AuthorizeView>
                 <Authorized>
                     <p class="ttt-user-label"><b>Wellcome, @context.User?.Identity?.Name</b></p> &nbsp; &nbsp;
-                    <button class="btn btn-danger btn-sm" @onclick="LogoutUser">@localizer["Logout"]</button>
+                    <button class="btn btn-danger btn-sm" @onclick="LogoutUser"> <span><i class="fa-solid fa-right-from-bracket"></i></span>@localizer["Logout"]</button>
                 </Authorized>
             </AuthorizeView>
         </div>
