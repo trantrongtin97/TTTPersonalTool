@@ -25,18 +25,23 @@ namespace TTT.PersonalTool.Server.Controllers
         [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
         public async Task<ActionResult<HttpStatusCode>> UpdateTheme(string userId, User user)
         {
-            
-            if (int.TryParse(userId, out var rs))
+            try
             {
-                User? userToUpdate = await _userRepository.GetByIdAsync(rs);
-                if (userToUpdate == null) return HttpStatusCode.BadRequest;
-                userToUpdate.Theme = (user.Theme == StUserTheme.Dark) ? StUserTheme.Dark : StUserTheme.Light;
+                if (int.TryParse(userId, out var rs))
+                {
+                    User? userToUpdate = await _userRepository.GetByIdAsync(rs);
+                    if (userToUpdate == null) return HttpStatusCode.BadRequest;
+                    userToUpdate.Theme = (user.Theme == StUserTheme.Dark) ? StUserTheme.Dark : StUserTheme.Light;
 
-                await _userRepository.GetContext().SaveChangesAsync();
-                return HttpStatusCode.OK;
+                    await _userRepository.GetContext().SaveChangesAsync();
+                    return HttpStatusCode.OK;
+                }
+                return HttpStatusCode.BadRequest;
             }
-            return HttpStatusCode.BadRequest;
-
+            catch
+            {
+                throw;
+            }
         }
     }
 }

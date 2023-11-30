@@ -24,41 +24,60 @@ namespace TTT.PersonalTool.Server.Controllers
         [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
         public async Task<ActionResult<User>> UpdateProfile(int userId, [FromBody] User user)
         {
-            User? userToUpdate = await _userRepository.GetByIdAsync(userId);
-            if (userToUpdate != null)
+            try
             {
-                userToUpdate.FirstName = user.FirstName;
-                userToUpdate.LastName = user.LastName;
-                userToUpdate.Username = user.Username;
-                userToUpdate.DateOfBirth = user.DateOfBirth;
-                await _userRepository.GetContext().SaveChangesAsync();
+                User? userToUpdate = await _userRepository.GetByIdAsync(userId);
+                if (userToUpdate != null)
+                {
+                    userToUpdate.FirstName = user.FirstName;
+                    userToUpdate.LastName = user.LastName;
+                    userToUpdate.Username = user.Username;
+                    userToUpdate.DateOfBirth = user.DateOfBirth;
+                    await _userRepository.GetContext().SaveChangesAsync();
+                }
+                return user;
             }
-
-            return user;
+            catch
+            {
+                throw;
+            }
         }
 
         [HttpGet("getprofile/{userId}")]
         [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
         public async Task<ActionResult<User>> GetProfile(int userId)
         {
-            User? user = await _userRepository.GetByIdAsync(userId);
-            if (user == null) return new User();
-            return ToCleanData(user);
+            try
+            {
+                User? user = await _userRepository.GetByIdAsync(userId);
+                if (user == null) return new User();
+                return ToCleanData(user);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         [HttpGet("DownloadServerFile")]
         [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
         public async Task<ActionResult<string>> DownloadServerFile()
         {
-            var filePath = @"C:\Data\";
-
-            using (var fileInput = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            try
             {
-                MemoryStream memoryStream = new MemoryStream();
-                await fileInput.CopyToAsync(memoryStream);
+                var filePath = @"C:\Data\";
+                using (var fileInput = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    MemoryStream memoryStream = new MemoryStream();
+                    await fileInput.CopyToAsync(memoryStream);
 
-                var buffer = memoryStream.ToArray();
-                return Convert.ToBase64String(buffer);
+                    var buffer = memoryStream.ToArray();
+                    return Convert.ToBase64String(buffer);
+                }
+            }
+            catch
+            {
+                throw;
             }
         }
 

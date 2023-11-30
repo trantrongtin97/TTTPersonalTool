@@ -9,6 +9,8 @@ using TTT.PersonalTool.Shared.Dtos;
 using TTT.PersonalTool.Shared.Enums;
 using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Models;
+using TTT.PersonalTool.Server.Logging;
+using TTT.PersonalTool.Shared.Logging;
 
 namespace TTT.PersonalTool.Server.Controllers
 {
@@ -45,33 +47,43 @@ namespace TTT.PersonalTool.Server.Controllers
         [HttpPost("registeruser")]
         public async Task<ActionResult<UserState>> RegisterUser(RegisterDto registerDto)
         {
-            bool fla = false;
-            User user = _mapper.Map<User>(registerDto);
-            var usernameExists = await _userRepository.GetByUsernameAsync(user.Username);
-            if (usernameExists == null)
+            try
             {
-                if (string.IsNullOrEmpty(user.TenantCode))
+                bool fla = false;
+                User user = _mapper.Map<User>(registerDto);
+                var usernameExists = await _userRepository.GetByUsernameAsync(user.Username);
+                if (usernameExists == null)
                 {
-                    fla = true;
-                    user.TenantCode = Guid.NewGuid().ToString();
-                }
-                user.Password = _sercurity.EncryptAES(user.Password);
-                user.Role = TTTPermissions.Member;
-                user.CreatedDate = DateTime.UtcNow;
-                user.Theme = StUserTheme.Light;
-                user.Version = $"v1.0";
-                var userIns = await _userRepository.InsertAsync(user, true);
-                if (fla  && await _tenantRepository.GetByCode(user.TenantCode) == 0)
-                {
-                    await _tenantRepository.InsertAsync(new Tenant()
+                    if (string.IsNullOrEmpty(user.TenantCode))
                     {
-                        Code = user.TenantCode,
-                        UserID = userIns.Id
-                    }, true);
+                        fla = true;
+                        user.TenantCode = Guid.NewGuid().ToString();
+                    }
+                    user.Password = _sercurity.EncryptAES(user.Password);
+                    user.Role = TTTPermissions.Member;
+                    user.CreatedDate = DateTime.UtcNow;
+                    user.Theme = StUserTheme.Light;
+                    user.Version = $"v1.0";
+                    var userIns = await _userRepository.InsertAsync(user, true);
+                    if (fla && await _tenantRepository.GetByCode(user.TenantCode) == 0)
+                    {
+                        await _tenantRepository.InsertAsync(new Tenant()
+                        {
+                            Code = user.TenantCode,
+                            UserID = userIns.Id
+                        }, true);
+                    }
+                    return Ok(UserState.Created);
                 }
-                return Ok(UserState.Created);
+                else
+                {
+                    return Ok(UserState.Existed);
+                }
             }
-            return Ok(UserState.Existed);
+            catch 
+            {
+                throw;
+            }
         }
 
 
@@ -79,19 +91,26 @@ namespace TTT.PersonalTool.Server.Controllers
         [HttpPost("authenticatejwt")]
         public async Task<ActionResult<AuthenticationResponse>> AuthenticateJWT(AuthenticationRequest authenticationRequest)
         {
-            string token = string.Empty;
-            authenticationRequest.Password = _sercurity.EncryptAES(authenticationRequest.Password);
+            try
+            {
+                string token = string.Empty;
+                authenticationRequest.Password = _sercurity.EncryptAES(authenticationRequest.Password);
 
-            User? loggedInUser = await _userRepository.VerifyUsernamePasswordAsync(authenticationRequest.Username, authenticationRequest.Password);
-            if (loggedInUser == null)
-            {
-                token = string.Empty;
+                User? loggedInUser = await _userRepository.VerifyUsernamePasswordAsync(authenticationRequest.Username, authenticationRequest.Password);
+                if (loggedInUser == null)
+                {
+                    token = string.Empty;
+                }
+                else
+                {
+                    token = await _systermTTT.GenerateJwtToken(loggedInUser);
+                }
+                return await Task.FromResult(new AuthenticationResponse() { Token = token });
             }
-            else
+            catch
             {
-                token = await _systermTTT.GenerateJwtToken(loggedInUser);
+                throw;
             }
-            return await Task.FromResult(new AuthenticationResponse() { Token = token });
         }
 
         [AllowAnonymous]
@@ -101,11 +120,15 @@ namespace TTT.PersonalTool.Server.Controllers
             try
             {
                 int userid = await _systermTTT.GetUserIDByJWT(jwtToken);
-                return ToCleanData(await _userRepository.GetByIdAsync(userid) ?? new User());
+                var user = await _userRepository.GetByIdAsync(userid);
+                if (user!=null)
+                {
+                    return ToCleanData(user);
+                }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                Console.WriteLine("Exception : " + ex.Message);
+                _logger.Log(LogLevel.Error, new EventId(500, "UnhandledException"), ex, null);
             }
             return BadRequest();
         }
@@ -114,27 +137,48 @@ namespace TTT.PersonalTool.Server.Controllers
         [HttpGet("getallusers")]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
-            var userid = await _systermTTT.GetIDRequestUser(HttpContext);
-            return await _userRepository.GetListDependUserAsync(userid);
+            try
+            {
+                var userid = await _systermTTT.GetIDRequestUser(HttpContext);
+                return await _userRepository.GetListDependUserAsync(userid);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
         [HttpGet("getallroles")]
         public async Task<ActionResult<List<string>>> GetAllRoles()
         {
-            return typeof(TTTPermissions).GetFields()
-              .Where(f => !f.Name.Contains("Policy") && f.Name != nameof(TTTPermissions.TTTAdmin) && f.Name != nameof(TTTPermissions.Root)).Select(t=>(string)t.GetValue(null)).ToList();
+            try
+            {
+                return typeof(TTTPermissions).GetFields()
+              .Where(f => !f.Name.Contains("Policy") && f.Name != nameof(TTTPermissions.TTTAdmin) && f.Name != nameof(TTTPermissions.Root)).Select(t => (string)t.GetValue(null)).ToList();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
         [HttpPut("assignrole")]
         public async Task<ActionResult<int>> AssignRole([FromBody] User user)
         {
-            User? userToUpdate = await _userRepository.GetByIdAsync(user.Id);
-            if (userToUpdate != null)
+            try
             {
-                userToUpdate.Role = user.Role;
-                return await _userRepository.GetContext().SaveChangesAsync();
+                User? userToUpdate = await _userRepository.GetByIdAsync(user.Id);
+                if (userToUpdate != null)
+                {
+                    userToUpdate.Role = user.Role;
+                    return await _userRepository.GetContext().SaveChangesAsync();
+                }
+            }
+            catch(Exception ex)
+            {
+               _logger.Log(LogLevel.Error, new EventId(500, "UnhandledException"), ex, null);
             }
             return BadRequest();
         }
@@ -143,8 +187,15 @@ namespace TTT.PersonalTool.Server.Controllers
         [HttpDelete("deleteuser/{userId}")]
         public async Task<ActionResult<int>> DeleteUser(int userId)
         {
-            await _userRepository.DeleteAsync(new User() { Id = userId }, true);
-            return Ok(1);
+            try
+            {
+                await _userRepository.DeleteAsync(new User() { Id = userId }, true);
+                return Ok(1);
+            }
+            catch 
+            {
+                throw;
+            }
         }
 
         private static User ToCleanData(User user) =>
