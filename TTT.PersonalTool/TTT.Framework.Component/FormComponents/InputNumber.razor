@@ -1,0 +1,11 @@
+﻿@inherits InputBase<double?>
+<input type="text" @bind="@CurrentValue" class="form-control dark-theme-textbox" />
+<ValidationMessage For=@ValueExpression />
+@code {
+    protected override bool TryParseValueFromString(string? value, out double? result, out string validationErrorMessage)
+    {
+        result = double.Parse(value);
+        validationErrorMessage = null;
+        return true;
+    }
+}

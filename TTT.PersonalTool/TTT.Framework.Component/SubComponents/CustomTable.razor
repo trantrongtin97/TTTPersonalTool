@@ -25,9 +25,9 @@
         }
     </tbody>
 </table>
-<TTT.FrameWork.Component.SubComponents.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"/>
+<TTT.Framework.Component.SubComponents.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"/>
 
-<TTT.FrameWork.Component.SubComponents.EditTargetComponent @ref="EditTarget" ObjectChange="ObjectChange" Target="Target" />
+<TTT.Framework.Component.SubComponents.EditTargetComponent @ref="EditTarget" ObjectChange="ObjectChange" Target="Target" />
                                             
 @code{
     [Parameter]
@@ -42,7 +42,7 @@
 
     private int SelectedID { get; set; }
 
-    protected TTT.FrameWork.Component.SubComponents.ConfirmDelete  DeleteConfirmation { get; set; }
+    protected TTT.Framework.Component.SubComponents.ConfirmDelete  DeleteConfirmation { get; set; }
 
     protected void ForcusDelete_Click(object obj)
     {
@@ -65,7 +65,7 @@
 
     private TItem? Target { get; set; }
     private TItem? NewTarget { get; set; }
-    protected TTT.FrameWork.Component.SubComponents.EditTargetComponent<TItem?> EditTarget { get; set; }
+    protected TTT.Framework.Component.SubComponents.EditTargetComponent<TItem?> EditTarget { get; set; }
 
     protected async void ForcusEdit_Click(object obj)
     {
