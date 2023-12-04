@@ -41,7 +41,7 @@
                 </form>
             </div>
         </div>
-        <TTT.PersonalTool.Client.Components.ConfirmSave @ref="SaveConfirmation" ConfirmationChanged="ConfirmSave_Click"
+        <TTT.FrameWork.Component.SubComponents.ConfirmSave @ref="SaveConfirmation" ConfirmationChanged="ConfirmSave_Click"
                                                         ConfirmationMessage="@localizer["MsgConfirmSave"]" ConfirmationTitle=@localizer["TitleConfirmSave"] />
     </ContentTemplate>
 </SpinLoader>
@@ -102,7 +102,7 @@
     }
 
 
-    protected TTT.PersonalTool.Client.Components.ConfirmSave SaveConfirmation { get; set; }
+    protected TTT.FrameWork.Component.SubComponents.ConfirmSave SaveConfirmation { get; set; }
 
     protected void Save_Click()
     {

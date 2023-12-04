@@ -1,0 +1,182 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations;
+@inherits EditBaseComponent
+@typeparam TItem
+
+@if (ShowConfirmation)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" id="confirmSaveModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmSaveModalLabel">@ConfirmationTitle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmationChange(false)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @{
+                        
+                        if(Target != null)
+                        {
+                            <EditForm Model="@Target" OnValidSubmit="@OnObjectChange">
+                                <DataAnnotationsValidator />
+                                 @foreach (var field in FieldIdentifiers)
+                                // {
+                                //     if (field.Value == "string")
+                                //     {
+                                //         @field.Key
+                                //         @CreateComponent(field.Key);
+                                //         <br />
+                                //     }
+                                // }
+                                
+                                    @CreateComponent()
+                            </EditForm>
+                        }
+                    }
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">@MsgBtnCancel</button>
+                    <button type="submit" class="btn btn-danger" data-dismiss="modal" @onclick="() => OnObjectChange(Target)">@MsgBtnSave</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter, AllowNull]
+    public TItem? Target { get; set; }
+
+    public async Task LoadObj(object value)
+    {
+        Target = (TItem)value;
+    }
+
+    [Parameter]
+    public EventCallback<object> ObjectChange { get; set; }
+
+    protected async Task OnObjectChange(object value)
+    {
+        ShowConfirmation = false;
+        await ObjectChange.InvokeAsync(value);
+    }
+
+
+    [Parameter] public Dictionary<string, string> FieldIdentifiers { get; set; } = new Dictionary<string, string> { { "Name", "string" } };
+
+    // public RenderFragment CreateComponent(string fld) => builder =>
+    // {
+    //     builder.OpenComponent(0, typeof(TTT.FrameWork.Component.FormComponents.InputText));
+
+    //     // Get the initial property value
+    //     var propInfoValue = typeof(TItem).GetProperty(fld);
+    //     var s = propInfoValue.GetValue(Target);
+    //     builder.AddAttribute(1, "Value", s);
+
+    //     // Create the handler for ValueChanged. I use reflection to the value.
+    //     builder.AddAttribute(3, "ValueChanged",Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<System.String>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<System.String>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (string)propInfoValue.GetValue(Target)))));
+
+    //     // Create an expression to set the ValueExpression-attribute.
+    //     var constant = System.Linq.Expressions.Expression.Constant(Target, typeof(TItem));
+    //     var exp = System.Linq.Expressions.MemberExpression.Property(constant, fld);
+    //     var lamb = System.Linq.Expressions.Expression.Lambda<Func<string>>(exp);
+    //     builder.AddAttribute(4, "ValueExpression", lamb);
+
+    //     builder.CloseComponent();
+    // };
+
+    public RenderFragment CreateComponent() => builder =>
+    {
+        var proList = typeof(TItem).GetProperties();
+        foreach (var prp in proList)
+        {
+            Type T = prp.GetType();
+            if (prp.GetCustomAttributes(typeof(DataTypeAttribute), true).Length != 0)
+            {
+                var attrList = (DataTypeAttribute)prp.GetCustomAttributes(typeof(DataTypeAttribute), false).First();
+                // var displayLabel = (DisplayAttribute)prp.GetCustomAttributes(typeof(DisplayAttribute), false).First();
+                // Get the initial property value.
+                var propInfoValue = typeof(TItem).GetProperty(prp.Name);
+                // Create an expression to set the ValueExpression-attribute.
+                var constant = System.Linq.Expressions.Expression.Constant(Target, typeof(TItem));
+                var exp = System.Linq.Expressions.MemberExpression.Property(constant, prp.Name);
+                switch (attrList.DataType)
+                {
+                    case DataType.Text:
+                    case DataType.EmailAddress:
+                    case DataType.PhoneNumber:
+                    case DataType.MultilineText:
+                        {
+                            builder.OpenComponent(0, typeof(TTT.FrameWork.Component.FormComponents.InputText));
+                            // Create the handler for ValueChanged.
+                            builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<System.String>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<System.String>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (string)propInfoValue.GetValue(Target)))));
+                            builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
+                            if (attrList.DataType == DataType.MultilineText)
+                                builder.AddAttribute(6, "Multiline", true);
+                            break;
+                        }
+                    // case DataType.Date:
+                    //     builder.OpenComponent(0, typeof(SfDatePicker<DateTime?>));
+                    //     builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(DataContext, __value), (DateTime?)propInfoValue.GetValue(DataContext)))));
+                    //     builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime?>>(exp));
+                    //     break;
+                    // case DataType.Duration:
+                    //     builder.OpenComponent(0, typeof(SfNumericTextBox<decimal?>));
+                    //     builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<decimal?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<decimal?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(DataContext, __value), (decimal?)propInfoValue.GetValue(DataContext)))));
+                    //     builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<decimal?>>(exp));
+                    //     break;
+                    // case DataType.Custom:
+                    //     if (attrList.CustomDataType == "DropdownList")
+                    //     {
+                    //         builder.OpenComponent(0, typeof(Syncfusion.Blazor.DropDowns.SfDropDownList<string, Countries>));
+                    //         builder.AddAttribute(1, "DataSource", countries.GetCountries());
+                    //         builder.AddAttribute(4, "ChildContent", (Microsoft.AspNetCore.Components.RenderFragment)((builder2) =>
+                    //         {
+                    //             builder2.AddMarkupContent(5, "\r\n    ");
+                    //             builder2.OpenComponent<Syncfusion.Blazor.DropDowns.DropDownListFieldSettings>
+                    //           (6);
+
+                    //             builder2.AddAttribute(7, "Value", "Code");
+                    //             builder2.AddAttribute(8, "Text", "Name");
+                    //             builder2.CloseComponent();
+                    //             builder2.AddMarkupContent(9, "\r\n");
+                    //         }));
+
+                    //     }
+                    //     else if (attrList.CustomDataType == "ComboBox")
+                    //     {
+                    //         builder.OpenComponent(0, typeof(Syncfusion.Blazor.DropDowns.SfComboBox<string, Cities>));
+                    //         builder.AddAttribute(1, "DataSource", cities.GetCities());
+                    //         builder.AddAttribute(4, "ChildContent", (Microsoft.AspNetCore.Components.RenderFragment)((builder2) =>
+                    //         {
+                    //             builder2.AddMarkupContent(5, "\r\n    ");
+                    //             builder2.OpenComponent<Syncfusion.Blazor.DropDowns.ComboBoxFieldSettings>
+                    //           (6);
+
+                    //             builder2.AddAttribute(7, "Value", "Code");
+                    //             builder2.AddAttribute(8, "Text", "Name");
+                    //             builder2.CloseComponent();
+                    //             builder2.AddMarkupContent(9, "\r\n");
+                    //         }));
+                    //     }
+                    //     builder.AddAttribute(3, "ValueChanged", RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<System.String>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<System.String>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(DataContext, __value), (string)propInfoValue.GetValue(DataContext)))));
+                    //     builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
+                    //     break;
+                    default:
+                        break;
+                }
+                var defaultValue = propInfoValue.GetValue(Target);
+                builder.AddAttribute(1, "Value", defaultValue);
+                // builder.AddAttribute(6, "PlaceHolder", displayLabel.Name);
+                // builder.AddAttribute(6, "FloatLabelType", FloatLabelType.Auto);
+
+                builder.CloseComponent();
+            }
+        }
+    };
+
+}
+               

@@ -9,6 +9,6 @@ namespace TTT.Framework.SubComponents
         public EventCallback<int> ActionDelete { get; set; }
 
         [Parameter]
-        public EventCallback<int> ActionEdit { get; set; }
+        public EventCallback<object> ActionEdit { get; set; }
     }
 }

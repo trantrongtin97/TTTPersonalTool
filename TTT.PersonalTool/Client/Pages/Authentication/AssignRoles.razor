@@ -54,7 +54,7 @@
                 
             </div>
         </div>
-        <TTT.PersonalTool.Client.Components.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"
+        <TTT.FrameWork.Component.SubComponents.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"
                                                                                              ConfirmationMessage="@localizer["MsgConfirmDelete"]" ConfirmationTitle=@localizer["TitleConfirmDelete"]/>
     </ContentTemplate>
 </SpinLoader>
@@ -94,7 +94,7 @@
 
     }
 
-    protected TTT.PersonalTool.Client.Components.ConfirmDelete DeleteConfirmation { get; set; }
+    protected TTT.FrameWork.Component.SubComponents.ConfirmDelete DeleteConfirmation { get; set; }
     private int tempid { get; set; }
     protected void Delete_Click(int id)
     {

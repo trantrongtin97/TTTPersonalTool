@@ -1,6 +1,4 @@
-﻿@using System.Diagnostics.CodeAnalysis;
-@inject IStringLocalizer<Resource> localizer
-@inherits TableBaseComponent
+﻿@inherits TableBaseComponent
 @typeparam TItem
 
 
@@ -19,17 +17,17 @@
                 <tr>
                     @RowTemplate(item)
                     <td style="width:300px">
-                        <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>ForcusEdit_Click(item)"> @localizer["Edit"]</button>
-                        <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>ForcusDelete_Click(item)">@localizer["Delete"]</button>
+                        <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>ForcusEdit_Click(item)"> @MsgBtnEdit</button>
+                        <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>ForcusDelete_Click(item)">@MsgBtnDelete</button>
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
-<TTT.PersonalTool.Client.Components.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"
-                                                  ConfirmationMessage="@localizer["MsgConfirmDelete"]" ConfirmationTitle=@localizer["TitleConfirmDelete"] />
-<TTT.PersonalTool.Client.Components.EditTargetComponent @ref="EditTarget" ConfirmationChanged="ConfirmEdit_Click" ConfirmationTitle="comfirghghgm" Target="Target" />
+<TTT.FrameWork.Component.SubComponents.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"/>
+
+<TTT.FrameWork.Component.SubComponents.EditTargetComponent @ref="EditTarget" ObjectChange="ObjectChange" Target="Target" />
                                             
 @code{
     [Parameter]
@@ -44,7 +42,7 @@
 
     private int SelectedID { get; set; }
 
-    protected TTT.PersonalTool.Client.Components.ConfirmDelete DeleteConfirmation { get; set; }
+    protected TTT.FrameWork.Component.SubComponents.ConfirmDelete  DeleteConfirmation { get; set; }
 
     protected void ForcusDelete_Click(object obj)
     {
@@ -66,20 +64,19 @@
     }
 
     private TItem? Target { get; set; }
-    protected TTT.PersonalTool.Client.Components.EditTargetComponent<TItem?> EditTarget { get; set; }
+    private TItem? NewTarget { get; set; }
+    protected TTT.FrameWork.Component.SubComponents.EditTargetComponent<TItem?> EditTarget { get; set; }
 
-    protected void ForcusEdit_Click(object obj)
+    protected async void ForcusEdit_Click(object obj)
     {
+        await EditTarget.LoadObj(obj);
         Target = (TItem)obj;
         EditTarget.Show();
     }
 
-    protected async Task ConfirmEdit_Click(bool editConfirmed)
+    protected async Task ObjectChange(object obj)
     {
-        if (editConfirmed)
-        {
-            await ActionEdit.InvokeAsync(Target);
-        }
+        NewTarget = (TItem)obj;
     }
 }
 

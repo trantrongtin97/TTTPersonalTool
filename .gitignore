@@ -69,6 +69,10 @@ dkms.conf
 **/TTT.Framework/obj/
 **/TTT.Framework/bin/
 
+# Ignore bin folder on Framework.Component
+**/TTT.Framework.Component/obj/
+**/TTT.Framework.Component/bin/
+
 # Ignore .vscode and .vs
 **/.vs/
 **/Notes.txt

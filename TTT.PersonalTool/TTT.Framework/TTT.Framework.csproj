@@ -5,11 +5,25 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="SubComponents\ConfirmBaseComponent.cs" />
+    <Compile Remove="SubComponents\EditBaseComponent.cs" />
+    <Compile Remove="SubComponents\TableBaseComponent.cs" />
+  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Dapper" Version="2.1.21" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.10" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.13" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.5" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\TTT.FrameWork.Component\TTT.Framework.Component.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="SubComponents\" />
 	</ItemGroup>
 </Project>
