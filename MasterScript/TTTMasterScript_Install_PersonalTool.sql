@@ -122,6 +122,7 @@ BEGIN
 		[Name] NVARCHAR(100) NOT NULL,
 		[Description] NVARCHAR(300) NULL,
 		[Price] FLOAT NULL,
+		[CreateDate] DATETIME NULL,
 		[TenantCode] NVARCHAR(500) NULL,
         CONSTRAINT [PK_tblItem]
             PRIMARY KEY CLUSTERED ([ID] ASC)

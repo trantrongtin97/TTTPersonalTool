@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TTT.Framework.Shared\TTT.Framework.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

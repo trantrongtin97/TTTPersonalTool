@@ -1,0 +1,15 @@
+﻿@inherits InputBase<DateTime?>
+
+<label>@DisplayName</label>
+<input type="datetime" @bind="@CurrentValue" class="form-control dark-theme-textbox" />
+<ValidationMessage For=@ValueExpression />
+
+@code {
+
+    protected override bool TryParseValueFromString(string? value, out DateTime? result, out string validationErrorMessage)
+    {
+        result = DateTime.Parse(value);
+        validationErrorMessage = null;
+        return true;
+    }
+}

@@ -27,7 +27,7 @@
 </table>
 <TTT.Framework.Component.SubComponents.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"/>
 
-<TTT.Framework.Component.SubComponents.EditTargetComponent @ref="EditTarget" ObjectChange="ObjectChange" Target="Target" />
+<TTT.Framework.Component.SubComponents.EditTargetComponent @ref="EditTarget" ObjectChange="ObjectChange" TItem="TItem"/>
                                             
 @code{
     [Parameter]
@@ -63,20 +63,18 @@
         }
     }
 
-    private TItem? Target { get; set; }
-    private TItem? NewTarget { get; set; }
     protected TTT.Framework.Component.SubComponents.EditTargetComponent<TItem?> EditTarget { get; set; }
 
     protected async void ForcusEdit_Click(object obj)
     {
-        await EditTarget.LoadObj(obj);
-        Target = (TItem)obj;
+        var tempObj = ObjectCloner.ObjectCloner.DeepClone(obj);
+        await EditTarget.LoadObj(tempObj);
         EditTarget.Show();
     }
 
     protected async Task ObjectChange(object obj)
     {
-        NewTarget = (TItem)obj;
+        var a  = (TItem)obj;
     }
 }
 

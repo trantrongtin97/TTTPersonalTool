@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.PersonalTool.Shared", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.Framework", "TTT.Framework\TTT.Framework.csproj", "{DFB4FFC0-6EA8-4A30-960F-68BEB0D8606B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTT.Framework.Component", "TTT.FrameWork.Component\TTT.Framework.Component.csproj", "{2F9D06D0-4108-4358-A9EB-A5AE4958246B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.Framework.Component", "TTT.FrameWork.Component\TTT.Framework.Component.csproj", "{2F9D06D0-4108-4358-A9EB-A5AE4958246B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTT.Framework.Shared", "TTT.Framework.Shared\TTT.Framework.Shared.csproj", "{5880D26D-A04A-4CB8-9DD2-E36CF0298716}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2F9D06D0-4108-4358-A9EB-A5AE4958246B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F9D06D0-4108-4358-A9EB-A5AE4958246B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F9D06D0-4108-4358-A9EB-A5AE4958246B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5880D26D-A04A-4CB8-9DD2-E36CF0298716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5880D26D-A04A-4CB8-9DD2-E36CF0298716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5880D26D-A04A-4CB8-9DD2-E36CF0298716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5880D26D-A04A-4CB8-9DD2-E36CF0298716}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

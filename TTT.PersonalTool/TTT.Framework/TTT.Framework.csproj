@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="SubComponents\ConfirmBaseComponent.cs" />
-    <Compile Remove="SubComponents\EditBaseComponent.cs" />
-    <Compile Remove="SubComponents\TableBaseComponent.cs" />
+    <None Include="..\TTT.Framework.Component\FormComponents\DateInput.razor" Link="DateInput.razor" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Dapper" Version="2.1.21" />
@@ -22,8 +20,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\TTT.FrameWork.Component\TTT.Framework.Component.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="SubComponents\" />
+	  <ProjectReference Include="..\TTT.Framework.Shared\TTT.Framework.Shared.csproj" />
 	</ItemGroup>
 </Project>

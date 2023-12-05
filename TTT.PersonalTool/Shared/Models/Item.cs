@@ -12,6 +12,7 @@ public partial class Item : IDataEntity<int>
     [MaxLength(DefineFieldValue.String_Lenght_100)]
     public string Name { get; set; }
     public double? Price { get; set; }
+    public DateTime? CreateDate { get; set; }
     [MaxLength(DefineFieldValue.String_Lenght_500)]
     public string? TenantCode { get; set; }
 
