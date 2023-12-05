@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TTT.Framework.EfCore;
 using TTT.PersonalTool.Server.DbContexts;
+using TTT.PersonalTool.Shared.Dtos;
 using TTT.PersonalTool.Shared.IRepositories;
 using TTT.PersonalTool.Shared.Models;
 
@@ -22,6 +23,15 @@ namespace TTT.PersonalTool.Server.Repositories
                 return tenant.Id;
             }
             return 0;
+        }
+
+        public async Task<List<TenantLookUp>> GetDataLookUp()
+        {
+            return await _context.Tenant.Select(t => new TenantLookUp()
+            {
+                Id = t.Id,
+                Code = t.Code
+            }).ToListAsync();
         }
     }
 }

@@ -17,16 +17,19 @@ namespace TTT.PersonalTool.Server.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly ICoreSystermTTT _systermTTT;
         private readonly IItemRepository _itemRepository;
+        private readonly ITenantRepository _tenantRepository;
         private readonly IMapper _mapper;
 
         public ItemController(ILogger<UserController> logger, 
             ICoreSystermTTT systermTTT, 
             IItemRepository itemRepository,
+            ITenantRepository tenantRepository,
             IMapper mapper)
         {
             _logger = logger;
             _systermTTT = systermTTT;
             _itemRepository = itemRepository;
+            _tenantRepository = tenantRepository;
             _mapper = mapper;
         }
 
@@ -46,6 +49,13 @@ namespace TTT.PersonalTool.Server.Controllers
             if(item ==null) return 0;
             await _itemRepository.DeleteAsync(item,true);
             return 1;
+        }
+
+        [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
+        [HttpGet("gettenantdataloopup")]
+        public async Task<ActionResult<List<TenantLookUp>>> GetTenantDataLookUp()
+        {
+            return await _tenantRepository.GetDataLookUp();
         }
     }
 }

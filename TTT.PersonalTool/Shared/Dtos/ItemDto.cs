@@ -14,10 +14,15 @@ public class ItemDto
     [Required]
     [Display(Name = "Price")]
     [TTTDataType(TTTDataType.Double)]
-    [Range(1, 10)]
+    [Range(1, 100)]
     public double? Price { get; set; }
     [Required]
     [Display(Name = "CreateDate")]
     [TTTDataType(TTTDataType.Date)]
     public DateTime? CreateDate { get; set; }
+
+    [TTTDataType(TTTDataType.Combobox)]
+    [Display(Name = "TenantID")]
+    public int? TenantID { get; set; }
+    public List<TenantLookUp>? TenantLookUp { get; set; }
 }

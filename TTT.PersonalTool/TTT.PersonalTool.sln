@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.Framework", "TTT.Framew
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.Framework.Component", "TTT.FrameWork.Component\TTT.Framework.Component.csproj", "{2F9D06D0-4108-4358-A9EB-A5AE4958246B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTT.Framework.Shared", "TTT.Framework.Shared\TTT.Framework.Shared.csproj", "{5880D26D-A04A-4CB8-9DD2-E36CF0298716}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTT.Framework.Shared", "TTT.Framework.Shared\TTT.Framework.Shared.csproj", "{5880D26D-A04A-4CB8-9DD2-E36CF0298716}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,38 @@
+﻿@inherits InputBase<int?>
+
+<InputSelect class="form-control" @bind-Value="HandleChange">
+    @ChildContent
+    @foreach (DataLookUp c in Data)
+    {
+        <option value="@c.Id">@c.Code</option>
+    }
+</InputSelect>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public List<DataLookUp> Data { get; set; }
+
+    public string HandleChange
+    {
+        get { return CurrentValueAsString; }
+        set { CurrentValueAsString = value; }
+    }
+
+    protected override bool TryParseValueFromString(string value, out int? result, out string validationErrorMessage)
+    {
+        result = Data.FirstOrDefault(t=>t.Id == int.Parse(value)).Id;
+        if (value == "Los Angeles")
+        {
+            validationErrorMessage = "The city is temporarily unaccepted";
+            return false;
+        }
+        else
+        {
+            validationErrorMessage = null;
+            return true;
+        }    
+    }
+}
