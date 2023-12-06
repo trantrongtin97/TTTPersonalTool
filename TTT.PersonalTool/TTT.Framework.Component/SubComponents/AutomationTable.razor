@@ -27,7 +27,7 @@
 </table>
 <TTT.Framework.Component.SubComponents.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"/>
 
-<TTT.Framework.Component.SubComponents.EditTargetComponent @ref="EditTarget" ObjectChange="ObjectChange" TItem="TItem"/>
+<TTT.Framework.Component.AutoFormComponents.AutomationForm @ref="EditTarget" ObjectChange="ObjectChange" TItem="TItem"/>
                                             
 @code{
     [Parameter]
@@ -63,7 +63,7 @@
         }
     }
 
-    protected TTT.Framework.Component.SubComponents.EditTargetComponent<TItem?> EditTarget { get; set; }
+    protected TTT.Framework.Component.AutoFormComponents.AutomationForm<TItem?> EditTarget { get; set; }
 
     protected async void ForcusEdit_Click(object obj)
     {

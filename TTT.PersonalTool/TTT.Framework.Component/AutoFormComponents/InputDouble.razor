@@ -1,7 +1,10 @@
 ﻿@inherits InputBase<double?>
-<label>@DisplayName</label>
-<input type="text" @bind="@CurrentValue" class="form-control dark-theme-textbox" />
+
+<label for="autoinputdouble">@DisplayName</label>
+<input type="text" @bind="@CurrentValue" class="form-control dark-theme-textbox" id="autoinputdouble" />
 <ValidationMessage For=@ValueExpression />
+<br />
+
 @code {
     protected override bool TryParseValueFromString(string? value, out double? result, out string validationErrorMessage)
     {

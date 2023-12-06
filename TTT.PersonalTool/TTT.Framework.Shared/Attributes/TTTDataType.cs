@@ -79,6 +79,14 @@ public enum TTTDataType
     Double = 17,
     //
     // Summary:
-    //     Represents combobox data type. With Value : Code | Text : Name
-    Combobox = 18
+    //     Represents combobox data type. With Value : Id | Text : Code
+    Combobox = 18,
+    //
+    // Summary:
+    //     Represents dropdowlist data type. With Value : string | Text : string
+    Dropdowlist = 19,
+    //
+    // Summary:
+    //     Represents checkbox data type.
+    CheckBox = 20
 }

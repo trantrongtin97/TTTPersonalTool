@@ -1,0 +1,13 @@
+﻿@inherits InputBase<bool>
+
+<label>@DisplayName</label>
+<input type="checkbox" @bind="@CurrentValue" class="form-check-input">
+
+@code {
+    protected override bool TryParseValueFromString(string? value, out bool result, out string validationErrorMessage)
+    {
+        result = bool.Parse(value);
+        validationErrorMessage = null;
+        return true;
+    }
+}

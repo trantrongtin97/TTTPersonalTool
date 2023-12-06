@@ -23,6 +23,34 @@ public class ItemDto
 
     [TTTDataType(TTTDataType.Combobox)]
     [Display(Name = "TenantID")]
-    public int? TenantID { get; set; }
-    public List<TenantLookUp>? TenantLookUp { get; set; }
+    public int? TenantID { get; set; } = 2;
+
+    [DataLookUp("TenantID")]
+    public List<TenantLookUp>? TenantLookUp { get; set; } = new List<TenantLookUp>()
+    {
+        new TenantLookUp()
+        {
+            Id = 1,
+            Code = "Code1"
+        },
+        new TenantLookUp()
+        {
+            Id = 2,
+            Code = "Code2"
+        }
+    };
+
+    [TTTDataType(TTTDataType.Dropdowlist)]
+    [Display(Name = "TenantString")]
+    public string TenantString { get; set; }
+
+    [DataLookUp("TenantString")]
+    public List<string>? TenantStringLookUp { get; set; } = new List<string>()
+    {
+        "Code1","Code2"
+    };
+
+    [Display(Name = "IsActive")]
+    [TTTDataType(TTTDataType.CheckBox)]
+    public bool IsActive { get; set; } = false;
 }

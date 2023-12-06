@@ -17,12 +17,11 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-
                                 <div class="form-group">
                                     <DataAnnotationsValidator />
                                     @CreateComponent()
                                 </div>
-
+                                
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => OnConfirmationChange(false)">@MsgBtnCancel</button>
@@ -59,11 +58,39 @@
         var a = Target;
     }
 
+    private List<DataLookUp> ParseToLsDataLU(object? obj)
+    {
+        return new List<DataLookUp>((IEnumerable<DataLookUp>)obj);
+    }
+
+    private List<string> ParseToLsStringLU(object? obj)
+    {
+        return new List<string>((IEnumerable<string>)obj);
+    }
+
     public RenderFragment CreateComponent() => builder =>
     {
         var proList = typeof(TItem).GetProperties();
+        Dictionary<string, object?> dicDataLU = new Dictionary<string, object?>();
         foreach (var prp in proList)
         {
+            foreach (var p in proList.Where(t => t.Name.EndsWith("LookUp")))
+            {
+                var dataLookUp = (DataLookUpAttribute)p.GetCustomAttributes(typeof(DataLookUpAttribute), false)?.First();
+                if (dataLookUp.TargetProperty == prp.Name)
+                {
+                    var propInfoLU = typeof(TItem).GetProperty(p.Name);
+                    var propInfoLUValue = propInfoLU.GetValue(Target);
+                    if (propInfoLUValue is IEnumerable<DataLookUp>)
+                    {
+                        dicDataLU[dataLookUp.TargetProperty] = ParseToLsDataLU(propInfoLUValue);
+                    }
+                    if (propInfoLUValue is IEnumerable<string>)
+                    {
+                        dicDataLU[dataLookUp.TargetProperty] = ParseToLsStringLU(propInfoLUValue);
+                    }
+                }
+            }
             if (prp.Name.EndsWith("LookUp")) continue;
             Type T = prp.GetType();
             if (prp.GetCustomAttributes(typeof(TTTDataTypeAttribute), true).Length != 0)
@@ -116,47 +143,20 @@
                     case TTTDataType.Combobox:
                         builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.Selection));
                         builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<int?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<int?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (int?)propInfoValue.GetValue(Target)))));
-                        builder.AddAttribute(1, "Data", new List<DataLookUp>());
+                        builder.AddAttribute(1, "Data", dicDataLU[prp.Name]);
                         builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<int?>>(exp));
                         break;
-                    // // case DataType.Custom:
-                    // //     if (attrList.CustomDataType == "DropdownList")
-                    // //     {
-                    // //         builder.OpenComponent(0, typeof(Syncfusion.Blazor.DropDowns.SfDropDownList<string, Countries>));
-                    // //         builder.AddAttribute(1, "DataSource", countries.GetCountries());
-                    // //         builder.AddAttribute(4, "ChildContent", (Microsoft.AspNetCore.Components.RenderFragment)((builder2) =>
-                    // //         {
-                    // //             builder2.AddMarkupContent(5, "\r\n    ");
-                    // //             builder2.OpenComponent<Syncfusion.Blazor.DropDowns.DropDownListFieldSettings>
-                    // //           (6);
-
-                    // //             builder2.AddAttribute(7, "Value", "Code");
-                    // //             builder2.AddAttribute(8, "Text", "Name");
-                    // //             builder2.CloseComponent();
-                    // //             builder2.AddMarkupContent(9, "\r\n");
-                    // //         }));
-
-                    // //     }
-                    // //     else if (attrList.CustomDataType == "ComboBox")
-                    // //     {
-                    // //         builder.OpenComponent(0, typeof(Syncfusion.Blazor.DropDowns.SfComboBox<string, Cities>));
-                    // //         builder.AddAttribute(1, "DataSource", cities.GetCities());
-                    // //         builder.AddAttribute(4, "ChildContent", (Microsoft.AspNetCore.Components.RenderFragment)((builder2) =>
-                    // //         {
-                    // //             builder2.AddMarkupContent(5, "\r\n    ");
-                    // //             builder2.OpenComponent<Syncfusion.Blazor.DropDowns.ComboBoxFieldSettings>
-                    // //           (6);
-
-                    // //             builder2.AddAttribute(7, "Value", "Code");
-                    // //             builder2.AddAttribute(8, "Text", "Name");
-                    // //             builder2.CloseComponent();
-                    // //             builder2.AddMarkupContent(9, "\r\n");
-                    // //         }));
-                    // //     }
-                    // //     builder.AddAttribute(3, "ValueChanged", RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<System.String>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<System.String>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(DataContext, __value), (string)propInfoValue.GetValue(DataContext)))));
-                    // //     builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
-                    // //     break;
-
+                    case TTTDataType.Dropdowlist:
+                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.Dropdowlist));
+                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<string>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<string>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (string)propInfoValue.GetValue(Target)))));
+                        builder.AddAttribute(1, "Data", new List<string>());
+                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
+                        break;
+                    case TTTDataType.CheckBox:
+                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.CheckBox));
+                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<bool>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (bool)propInfoValue.GetValue(Target)))));
+                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<bool>>(exp));
+                        break;
                     default:
                         break;
                 }
