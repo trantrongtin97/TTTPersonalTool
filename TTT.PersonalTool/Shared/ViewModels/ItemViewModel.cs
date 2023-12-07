@@ -7,11 +7,6 @@ namespace TTT.PersonalTool.Shared.ViewModels
 {
     public class ItemViewModel : IItemViewModel
     {
-        //public int Id { get; set; }
-        //[TTTStringValidator(Requied = true, MaximumSize = DefineFieldValue.String_Lenght_200, Display = "Name Item")]
-        //public string Name { get; set; }
-        //[TTTNumberValidator(Requied = true, Display = "Price")]
-        //public double? Price { get; set; }
         public IEnumerable<ItemDto> AllItems { get; private set; } = new List<ItemDto>();
         private readonly HttpClient _httpClient;
         private readonly IAccessTokenService _accessTokenService;

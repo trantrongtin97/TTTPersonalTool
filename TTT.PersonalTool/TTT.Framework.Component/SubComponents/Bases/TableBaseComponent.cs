@@ -11,6 +11,9 @@ namespace TTT.Framework.SubComponents
         [Parameter]
         public EventCallback<object> ActionEdit { get; set; }
 
+        [Parameter]
+        public EventCallback<object> ActionCreate { get; set; }
+
 
         [Parameter, AllowNull]
         public string MsgBtnCancel { get; set; } = "Cancel";
@@ -22,6 +25,8 @@ namespace TTT.Framework.SubComponents
         public string MsgBtnSave { get; set; } = "Save";
         [Parameter, AllowNull]
         public string MsgBtnEdit { get; set; } = "Edit";
+        [Parameter, AllowNull]
+        public string MsgBtnCreate { get; set; } = "New";
 
 
         [Parameter, AllowNull]
@@ -35,5 +40,11 @@ namespace TTT.Framework.SubComponents
 
         [Parameter, AllowNull]
         public string MsgConfirmSave { get; set; } = "Are you sure ?";
+
+        [Parameter, AllowNull]
+        public string TitleConfirmCreate { get; set; } = "New !";
+
+        [Parameter, AllowNull]
+        public string MsgConfirmCreate { get; set; } = "Are you sure ?";
     }
 }

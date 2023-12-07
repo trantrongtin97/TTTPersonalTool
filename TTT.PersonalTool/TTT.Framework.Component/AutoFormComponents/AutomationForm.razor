@@ -11,12 +11,15 @@
                     <EditForm Model="@Target" OnValidSubmit="@ValidSubmit" OnInvalidSubmit="InvalidSubmit">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="confirmSaveModalLabel">@ConfirmationTitle</h5>
+                                <h5 class="modal-title" id="confirmSaveModalLabel">
+                                    @if (!IsNewForm) @EditTitle else @CreateTitle
+                                </h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="() => OnConfirmationChange(false)">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
+
                                 <div class="form-group">
                                     <DataAnnotationsValidator />
                                     @CreateComponent()
@@ -36,11 +39,21 @@
 }
 
 @code {
+    private bool IsNewForm { get; set; }
     private TItem? Target { get; set; }
 
     public async Task LoadObj(object value)
     {
-        Target = (TItem)value;
+        if (value is not null)
+        {
+            Target = (TItem)value;
+            IsNewForm = false;
+        }
+        else
+        {
+            Target = Activator.CreateInstance<TItem>();
+            IsNewForm = true;
+        }
     }
 
     [Parameter]

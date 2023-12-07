@@ -1,12 +1,11 @@
 ﻿@inherits TableBaseComponent
 @typeparam TItem
 
-
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            @TableHeader
-            <th scope="col">....</th>
+            @ColumTemplate
+            <th scope="col"><button class="btn btn-danger" id="ttt-btn-grd" @onclick="() =>ForcusCreate_Click()">@MsgBtnCreate</button></th>
         </tr>
     </thead>
     <tbody>
@@ -25,13 +24,16 @@
         }
     </tbody>
 </table>
+
 <TTT.Framework.Component.SubComponents.ConfirmDelete @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"/>
 
 <TTT.Framework.Component.AutoFormComponents.AutomationForm @ref="EditTarget" ObjectChange="ObjectChange" TItem="TItem"/>
+
+<TTT.Framework.Component.AutoFormComponents.AutomationForm @ref="CreateTarget" ObjectChange="ObjectCreate" TItem="TItem" />
                                             
 @code{
     [Parameter]
-    public RenderFragment? TableHeader { get; set; }
+    public RenderFragment? ColumTemplate { get; set; }
 
     [Parameter]
     public RenderFragment<TItem>? RowTemplate { get; set; }
@@ -75,6 +77,19 @@
     protected async Task ObjectChange(object obj)
     {
         var a  = (TItem)obj;
+    }
+
+    protected TTT.Framework.Component.AutoFormComponents.AutomationForm<TItem?> CreateTarget { get; set; }
+
+    protected async void ForcusCreate_Click()
+    {
+        await CreateTarget.LoadObj(null);
+        CreateTarget.Show();
+    }
+
+    protected async Task ObjectCreate(object obj)
+    {
+        var a = (TItem)obj;
     }
 }
 

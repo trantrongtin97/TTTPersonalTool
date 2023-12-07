@@ -20,12 +20,17 @@
                 <strong>@localizer["Items"]</strong>
             </div>
             <div class="card-body">
-                <TTT.Framework.Component.SubComponents.AutomationTable Items="_itemViewModel.AllItems" Context="item" ActionDelete="DeleteItemInGrid" ActionEdit="EditItemInGrid">
-                    <TableHeader>
+                <TTT.Framework.Component.SubComponents.AutomationTable 
+                                Items="_itemViewModel.AllItems" 
+                                Context="item" 
+                                ActionDelete="DeleteItemInGrid" 
+                                ActionEdit="EditItemInGrid" 
+                                ActionCreate="CreateItemInGrid">
+                    <ColumTemplate>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
-                    </TableHeader>
+                    </ColumTemplate>
                     <RowTemplate>
                         <td>@item.Id</td>
                         <td>@item.Name</td>
@@ -50,6 +55,7 @@
     }
 
     protected TTT.Framework.Component.SubComponents.AutomationTable<ItemDto> CustomTable { get; set; }
+
     protected async Task DeleteItemInGrid(int idItem)
     {
         await _itemViewModel.DeleteItem(idItem);
@@ -58,6 +64,11 @@
     }
 
     protected async Task EditItemInGrid(object item)
+    {
+        var a = (ItemDto)item;
+    }
+
+    protected async Task CreateItemInGrid(object item)
     {
         var a = (ItemDto)item;
     }

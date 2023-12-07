@@ -11,7 +11,10 @@ namespace TTT.Framework.SubComponents
         protected bool ShowConfirmation { get; set; }
 
         [Parameter]
-        public string ConfirmationTitle { get; set; } = "Edit";
+        public string EditTitle { get; set; } = "Edit";
+
+        [Parameter]
+        public string CreateTitle { get; set; } = "New";
 
         [Parameter, AllowNull]
         public string MsgBtnCancel { get; set; } = "Cancel";
