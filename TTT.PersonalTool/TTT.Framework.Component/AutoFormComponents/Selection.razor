@@ -1,8 +1,8 @@
-﻿@inherits InputBase<int?>
+﻿@inherits InputBase<int>
 
 <label>@DisplayName</label>
 <InputSelect class="form-control dark-theme-textbox" @bind-Value="HandleChange">
-    @ChildContent
+    <option value="0">None</option>
     @foreach (DataLookUp c in Data)
     {
         <option value="@c.Id">@c.Code</option>
@@ -11,19 +11,21 @@
 <br />
 
 @code {
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
 
     [Parameter]
     public List<DataLookUp> Data { get; set; } = new List<DataLookUp>();
 
     public string HandleChange
     {
-        get { return CurrentValueAsString; }
+        get 
+        {
+            return CurrentValueAsString;
+
+        }
         set { CurrentValueAsString = value; }
     }
 
-    protected override bool TryParseValueFromString(string value, out int? result, out string validationErrorMessage)
+    protected override bool TryParseValueFromString(string value, out int result, out string validationErrorMessage)
     {
         result = int.Parse(value);
         if (value == "Los Angeles")

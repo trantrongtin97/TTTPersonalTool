@@ -5,7 +5,12 @@
     <thead>
         <tr>
             @ColumTemplate
-            <th scope="col"><button class="btn btn-danger" id="ttt-btn-grd" @onclick="() =>ForcusCreate_Click()">@MsgBtnCreate</button></th>
+            <th scope="col">
+                @if (ActionCreate.HasDelegate)
+                {
+                    <button class="btn btn-danger" id="ttt-btn-grd" @onclick="() =>ForcusCreate_Click()"><i class="fa-solid fa-plus"></i></button>
+                }
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -16,8 +21,14 @@
                 <tr>
                     @RowTemplate(item)
                     <td style="width:300px">
-                        <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>ForcusEdit_Click(item)"> @MsgBtnEdit</button>
-                        <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>ForcusDelete_Click(item)">@MsgBtnDelete</button>
+                        @if (ActionEdit.HasDelegate)
+                        {
+                            <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>ForcusEdit_Click(item)"><i class="fa-solid fa-pen"></i></button>
+                        }
+                        @if (ActionDelete.HasDelegate)
+                        {
+                            <button class="btn btn-outline-danger" id="ttt-btn-grd" @onclick="() =>ForcusDelete_Click(item)"><i class="fa-solid fa-trash"></i></button>
+                        }
                     </td>
                 </tr>
             }
@@ -76,7 +87,7 @@
 
     protected async Task ObjectChange(object obj)
     {
-        var a  = (TItem)obj;
+        await ActionEdit.InvokeAsync(obj);
     }
 
     protected TTT.Framework.Component.AutoFormComponents.AutomationForm<TItem?> CreateTarget { get; set; }
@@ -89,7 +100,7 @@
 
     protected async Task ObjectCreate(object obj)
     {
-        var a = (TItem)obj;
+        await ActionCreate.InvokeAsync(obj);
     }
 }
 

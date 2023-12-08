@@ -1,6 +1,5 @@
 ﻿@inherits EditBaseComponent
 @typeparam TItem
-
 @if (ShowConfirmation)
 {
     <div class="modal fade show d-block" tabindex="-1" role="dialog" id="confirmSaveModal">
@@ -62,7 +61,6 @@
     public async Task ValidSubmit()
     {
         ShowConfirmation = false;
-        var a = Target;
         await ObjectChange.InvokeAsync(Target);
     }
 
@@ -94,11 +92,12 @@
                 {
                     var propInfoLU = typeof(TItem).GetProperty(p.Name);
                     var propInfoLUValue = propInfoLU.GetValue(Target);
-                    if (propInfoLUValue is IEnumerable<DataLookUp>)
+                    if (propInfoLUValue is not null && propInfoLUValue is IEnumerable<DataLookUp>)
                     {
                         dicDataLU[dataLookUp.TargetProperty] = ParseToLsDataLU(propInfoLUValue);
                     }
-                    if (propInfoLUValue is IEnumerable<string>)
+
+                    if (propInfoLUValue is not null && propInfoLUValue is IEnumerable<string>)
                     {
                         dicDataLU[dataLookUp.TargetProperty] = ParseToLsStringLU(propInfoLUValue);
                     }
@@ -124,51 +123,35 @@
                     case TTTDataType.PhoneNumber:
                     case TTTDataType.MultilineText:
                         {
-                            builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.InputText));
-                            // Create the handler for ValueChanged.
-                            builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<System.String>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<System.String>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (string)propInfoValue.GetValue(Target)))));
-                            builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
+                            OpenComponentInputText(ref builder, prp, exp, propInfoValue);
                             if (attrList.DataType == TTTDataType.MultilineText)
+                            {
                                 builder.AddAttribute(6, "Multiline", true);
+                                builder.AddAttribute(7, "Rowline", 3);
+                            }
                             break;
                         }
                     case TTTDataType.Double:
                     case TTTDataType.Currency:
-                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.InputDouble));
-                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<double?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<double?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (double?)propInfoValue.GetValue(Target)))));
-                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<double?>>(exp));
+                        OpenComponentInputNumber(ref builder,prp,exp,propInfoValue);
                         break;
                     case TTTDataType.Date:
-                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.InputDate));
-                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime?)propInfoValue.GetValue(Target)))));
-                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime?>>(exp));
+                        OpenComponentInputDate(ref builder, prp, exp, propInfoValue);
                         break;
                     case TTTDataType.Time:
-                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.InputTime));
-                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime?)propInfoValue.GetValue(Target)))));
-                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime?>>(exp));
+                        OpenComponentInputTime(ref builder, prp, exp, propInfoValue);
                         break;
                     case TTTDataType.DateTime:
-                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.InputDateTime));
-                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime?)propInfoValue.GetValue(Target)))));
-                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime?>>(exp));
+                        OpenComponentInputDateTime(ref builder, prp, exp, propInfoValue);
                         break;
                     case TTTDataType.Combobox:
-                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.Selection));
-                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<int?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<int?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (int?)propInfoValue.GetValue(Target)))));
-                        builder.AddAttribute(1, "Data", dicDataLU[prp.Name]);
-                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<int?>>(exp));
+                        OpenComponentCombobox(ref builder, prp, exp, propInfoValue, dicDataLU);
                         break;
                     case TTTDataType.Dropdowlist:
-                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.Dropdowlist));
-                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<string>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<string>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (string)propInfoValue.GetValue(Target)))));
-                        builder.AddAttribute(1, "Data", new List<string>());
-                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
+                        OpenComponentDropdowlist(ref builder, prp, exp, propInfoValue, dicDataLU);
                         break;
                     case TTTDataType.CheckBox:
-                        builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.CheckBox));
-                        builder.AddAttribute(3, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<bool>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (bool)propInfoValue.GetValue(Target)))));
-                        builder.AddAttribute(4, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<bool>>(exp));
+                        OpenComponentCheckBox(ref builder, prp, exp, propInfoValue);
                         break;
                     default:
                         break;
@@ -183,5 +166,216 @@
         }
     };
 
+    private void OpenComponentInputText(ref Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder, 
+        System.Reflection.PropertyInfo prp,
+        System.Linq.Expressions.MemberExpression exp,
+        System.Reflection.PropertyInfo? propInfoValue,
+        int index = 0,
+        int indexValueChange = 3,
+        int indexValueExp = 4)
+    {
+        switch (prp.PropertyType)
+        {
+            case Type _ when prp.PropertyType == typeof(string):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputText<string>));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<System.String>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<System.String>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (string)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
+                break;
+            case Type _ when prp.PropertyType == typeof(char):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputText<char>));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<char>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<char>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (char)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<char>>(exp));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OpenComponentInputNumber(ref Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder,
+        System.Reflection.PropertyInfo prp,
+        System.Linq.Expressions.MemberExpression exp,
+        System.Reflection.PropertyInfo? propInfoValue,
+        int index = 0,
+        int indexValueChange = 3,
+        int indexValueExp = 4)
+    {
+        switch (prp.PropertyType)
+        {
+            case Type _ when prp.PropertyType == typeof(int):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputNumber<int>));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<int>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<int>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (int)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<int>>(exp));
+                break;
+            case Type _ when prp.PropertyType == typeof(int?):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputNumber<int?>));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<int?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<int?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (int?)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<int?>>(exp));
+                break;
+            case Type _ when prp.PropertyType == typeof(double):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputNumber<double>));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<double>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<double>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (double)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<double>>(exp));
+                break;
+            case Type _ when prp.PropertyType == typeof(double?):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputNumber<double?>));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<double?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<double?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (double?)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<double?>>(exp));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OpenComponentInputDate(ref Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder,
+        System.Reflection.PropertyInfo prp,
+        System.Linq.Expressions.MemberExpression exp,
+        System.Reflection.PropertyInfo? propInfoValue,
+        int index = 0,
+        int indexValueChange = 3,
+        int indexValueExp = 4)
+    {
+        switch (prp.PropertyType)
+        {
+            case Type _ when prp.PropertyType == typeof(DateTime):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputDate));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime>>(exp));
+                break;
+            case Type _ when prp.PropertyType == typeof(DateTime?):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputDateNull));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime?)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime?>>(exp));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OpenComponentInputDateTime(ref Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder,
+        System.Reflection.PropertyInfo prp,
+        System.Linq.Expressions.MemberExpression exp,
+        System.Reflection.PropertyInfo? propInfoValue,
+        int index = 0,
+        int indexValueChange = 3,
+        int indexValueExp = 4)
+    {
+        switch (prp.PropertyType)
+        {
+            case Type _ when prp.PropertyType == typeof(DateTime):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputDateTime));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime>>(exp));
+                break;
+            case Type _ when prp.PropertyType == typeof(DateTime?):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputDateTimeNull));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime?)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime?>>(exp));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OpenComponentInputTime(ref Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder,
+        System.Reflection.PropertyInfo prp,
+        System.Linq.Expressions.MemberExpression exp,
+        System.Reflection.PropertyInfo? propInfoValue,
+        int index = 0,
+        int indexValueChange = 3,
+        int indexValueExp = 4)
+    {
+        switch (prp.PropertyType)
+        {
+            case Type _ when prp.PropertyType == typeof(DateTime):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputTime));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime>>(exp));
+                break;
+            case Type _ when prp.PropertyType == typeof(DateTime?):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputTimeNull));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<DateTime?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<DateTime?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (DateTime?)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<DateTime?>>(exp));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OpenComponentCheckBox(ref Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder,
+        System.Reflection.PropertyInfo prp,
+        System.Linq.Expressions.MemberExpression exp,
+        System.Reflection.PropertyInfo? propInfoValue,
+        int index = 0,
+        int indexValueChange = 3,
+        int indexValueExp = 4)
+    {
+        switch (prp.PropertyType)
+        {
+            case Type _ when prp.PropertyType == typeof(bool):
+                builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.CheckBox));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<bool>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (bool)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<bool>>(exp));
+                break;
+            case Type _ when prp.PropertyType == typeof(bool?):
+                builder.OpenComponent(index, typeof(TTT.Framework.Component.AutoFormComponents.InputText<bool?>));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<bool?>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool?>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (bool?)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<bool?>>(exp));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OpenComponentCombobox(ref Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder,
+        System.Reflection.PropertyInfo prp,
+        System.Linq.Expressions.MemberExpression exp,
+        System.Reflection.PropertyInfo? propInfoValue,
+        Dictionary<string,object?> dic,
+        int index = 0,
+        int indexData = 1,
+        int indexValueChange = 3,
+        int indexValueExp = 4)
+    {
+        switch (prp.PropertyType)
+        {
+            case Type _ when prp.PropertyType == typeof(int):
+                builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.Selection));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<int>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<int>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (int)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<int>>(exp));
+                if (dic.ContainsKey(prp.Name) && dic[prp.Name] != null)
+                    builder.AddAttribute(indexData, "Data", dic[prp.Name]);
+                else
+                    builder.AddAttribute(indexData, "Data", new List<DataLookUp>());
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OpenComponentDropdowlist(ref Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder,
+        System.Reflection.PropertyInfo prp,
+        System.Linq.Expressions.MemberExpression exp,
+        System.Reflection.PropertyInfo? propInfoValue,
+        Dictionary<string, object?> dic,
+        int index = 0,
+        int indexData = 1,
+        int indexValueChange = 3,
+        int indexValueExp = 4)
+    {
+        switch (prp.PropertyType)
+        {
+            case Type _ when prp.PropertyType == typeof(string):
+                builder.OpenComponent(0, typeof(TTT.Framework.Component.AutoFormComponents.Dropdowlist));
+                builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<string>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<string>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (string)propInfoValue.GetValue(Target)))));
+                builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
+                if (dic.ContainsKey(prp.Name) && dic[prp.Name] != null)
+                    builder.AddAttribute(indexData, "Data", dic[prp.Name]);
+                else
+                    builder.AddAttribute(indexData, "Data", new List<string>());
+                break;
+            default:
+                break;
+        }
+    }
 }
                

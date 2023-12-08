@@ -6,8 +6,7 @@
 @inject IJSRuntime _jsRuntime
 @inject IToastService _toastService
 @inject IStringLocalizer<Resource> localizer
-
-@attribute [Authorize]
+@attribute [Authorize(Policy = nameof(TTTPermissions.Policy_LvAdmin))]
 
 <SpinLoader IsLoading="IsLoading">
     <LoadingTemplate>

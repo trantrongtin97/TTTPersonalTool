@@ -1,15 +1,31 @@
-﻿@inherits InputBase<string>
+﻿@typeparam T
+@inherits InputBase<T>
 
-<label>@DisplayName</label>
-<input type="text" @bind="@CurrentValue" class="form-control dark-theme-textbox" />
-<ValidationMessage For=@ValueExpression />
-<br />
+@if (Multiline)
+{
+    <label>@DisplayName</label>
+    <textarea type="text" @bind="@CurrentValue" rows="@Rowline" class="form-control dark-theme-textbox" />
+    <ValidationMessage For=@ValueExpression />
+    <br />
+}
+else
+{
+    <label>@DisplayName</label>
+    <input type="text" @bind="@CurrentValue" class="form-control dark-theme-textbox" />
+    <ValidationMessage For=@ValueExpression />
+    <br />
+}
+
 
 @code {
+    [Parameter]
+    public bool Multiline { get; set; } = false;
+    [Parameter]
+    public int Rowline { get; set; } = 1;
 
-    protected override bool TryParseValueFromString(string? value, out string result, out string validationErrorMessage)
+    protected override bool TryParseValueFromString(string? value, out T result, out string validationErrorMessage)
     {
-        result = value;
+        result = (T)Convert.ChangeType(value, typeof(T));
         validationErrorMessage = null;
         return true;
     }

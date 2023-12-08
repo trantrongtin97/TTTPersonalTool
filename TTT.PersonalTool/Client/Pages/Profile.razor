@@ -7,6 +7,7 @@
 @inject IJSRuntime _jsRuntime
 @inject HttpClient _httpClient
 @inject IToastService _toastService
+@attribute [Authorize(Policy = nameof(TTTPermissions.Policy_LvFull))]
 
 <SpinLoader IsLoading="IsLoading">
     <LoadingTemplate>

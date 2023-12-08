@@ -1,4 +1,5 @@
-﻿@inherits InputBase<double?>
+﻿@typeparam T
+@inherits InputBase<T>
 
 <label for="autoinputdouble">@DisplayName</label>
 <input type="number" @bind="@CurrentValue" class="form-control dark-theme-textbox" id="autoinputdouble" />
@@ -6,9 +7,9 @@
 <br />
 
 @code {
-    protected override bool TryParseValueFromString(string? value, out double? result, out string validationErrorMessage)
+    protected override bool TryParseValueFromString(string? value, out T result, out string validationErrorMessage)
     {
-        result = double.Parse(value);
+        result = (T)Convert.ChangeType(value, typeof(T));
         validationErrorMessage = null;
         return true;
     }

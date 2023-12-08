@@ -1,15 +1,15 @@
-﻿@inherits InputBase<DateTime?>
+﻿@inherits InputBase<DateTime>
 
 <label>@DisplayName</label>
-<input type="datetime" @bind="@CurrentValue" class="form-control dark-theme-textbox" />
+<input type="datetime-local" @bind="@CurrentValue" format="@formatString" class="form-control dark-theme-textbox" />
 <ValidationMessage For=@ValueExpression />
 <br />
 
 @code {
-
-    protected override bool TryParseValueFromString(string? value, out DateTime? result, out string validationErrorMessage)
+    private string formatString { get; } = "dd/mm/yyyy HH:mm";
+    protected override bool TryParseValueFromString(string? value, out DateTime result, out string validationErrorMessage)
     {
-        result = DateTime.Parse(value);
+        result = DateTime.ParseExact(value, formatString, CultureInfo.InvariantCulture);
         validationErrorMessage = null;
         return true;
     }
