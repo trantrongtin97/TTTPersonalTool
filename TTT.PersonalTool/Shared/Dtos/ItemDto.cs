@@ -29,7 +29,7 @@ public class ItemDto
 
     [TTTDataType(TTTDataType.Dropdowlist)]
     [Display(Name = "TenantCode")]
-    public string TenantCode { get; set; }
+    public string? TenantCode { get; set; }
 
     [DataLookUp("TenantCode")]
     public List<string>? TenantCodeLookUp { get; set; }

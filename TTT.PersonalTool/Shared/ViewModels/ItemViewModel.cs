@@ -37,13 +37,13 @@ namespace TTT.PersonalTool.Shared.ViewModels
         public async Task<HttpStatusCode> UpdateItem(ItemDto itemDto)
         {
             var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
-            return await _httpClient.PutAsync<HttpStatusCode>($"item/updateItem",itemDto, jwtToken);
+            return await _httpClient.PutAsync<HttpStatusCode>($"item/updateitem",itemDto, jwtToken);
         }
 
         public async Task<HttpStatusCode> CreateItem(ItemDto itemDto)
         {
             var jwtToken = await _accessTokenService.GetAccessTokenAsync("jwt_token");
-            return await _httpClient.PutAsync<HttpStatusCode>($"item/createitem", itemDto, jwtToken);
+            return await _httpClient.PostAsync<HttpStatusCode>($"item/createitem", itemDto, jwtToken);
         }
 
         public async Task GetDataLookUp(int id)
