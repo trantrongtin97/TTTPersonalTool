@@ -21,11 +21,13 @@
             </div>
             <div class="card-body">
                 <TTT.Framework.Component.SubComponents.AutomationTable 
-                                Items="_itemViewModel.AllItems" 
+                                Items="_itemViewModel.AllItems"
+                                DicDataLookUp="_itemViewModel.DicDataLookUp"
                                 Context="item" 
                                 ActionDelete="DeleteItemInGrid" 
                                 ActionEdit="EditItemInGrid" 
-                                ActionCreate="CreateItemInGrid">
+                                ActionCreate="CreateItemInGrid"
+                                ActionGetDataLookUp="RefreshDataLookUp">
                     <ColumTemplate>
                         <th>ID</th>
                         <th>Name</th>
@@ -65,11 +67,32 @@
 
     protected async Task EditItemInGrid(object item)
     {
-        var a = (ItemDto)item;
+        var code = await _itemViewModel.UpdateItem((ItemDto)item);
+        if (code == System.Net.HttpStatusCode.OK)
+        {
+            _toastService.ShowSuccess("Item Updated");
+        }
+        else
+        {
+            _toastService.ShowError("Update item fail");
+        }
     }
 
     protected async Task CreateItemInGrid(object item)
     {
-        var a = (ItemDto)item;
+        var code = await _itemViewModel.CreateItem((ItemDto)item);
+        if (code == System.Net.HttpStatusCode.Created)
+        {
+            _toastService.ShowSuccess("Item created");
+        }
+        else
+        {
+            _toastService.ShowError("Create item fail");
+        }
+    }
+
+    protected async Task RefreshDataLookUp(int id)
+    {
+        await _itemViewModel.GetDataLookUp(0);
     }
 }

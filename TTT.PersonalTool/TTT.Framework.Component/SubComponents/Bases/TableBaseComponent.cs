@@ -14,6 +14,11 @@ namespace TTT.Framework.SubComponents
         [Parameter]
         public EventCallback<object> ActionCreate { get; set; }
 
+        [Parameter]
+        public Dictionary<string, object?> DicDataLookUp { get; set; } = new Dictionary<string, object?>();
+
+        [Parameter]
+        public EventCallback<int> ActionGetDataLookUp { get; set; }
 
         [Parameter, AllowNull]
         public string MsgBtnCancel { get; set; } = "Cancel";

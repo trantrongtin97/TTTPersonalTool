@@ -59,9 +59,11 @@
 
     protected void ForcusDelete_Click(object obj)
     {
-        int.TryParse($"{obj.GetType().GetProperty("Id")?.GetValue(obj)}", out int rs);
-        SelectedID = rs;
-        DeleteConfirmation.Show();
+        if(int.TryParse($"{obj.GetType().GetProperty("Id")?.GetValue(obj)}", out int rs))
+        {
+            SelectedID = rs;
+            DeleteConfirmation.Show();
+        }
     }
 
     protected async Task ConfirmDelete_Click(bool deleteConfirmed)
@@ -80,8 +82,9 @@
 
     protected async void ForcusEdit_Click(object obj)
     {
+        await GetDataLookUp(0);
         var tempObj = ObjectCloner.ObjectCloner.DeepClone(obj);
-        await EditTarget.LoadObj(tempObj);
+        await EditTarget.LoadObj(tempObj,DicDataLookUp);
         EditTarget.Show();
     }
 
@@ -94,13 +97,20 @@
 
     protected async void ForcusCreate_Click()
     {
-        await CreateTarget.LoadObj(null);
+        await GetDataLookUp(0);
+        await CreateTarget.LoadObj(null, DicDataLookUp);
         CreateTarget.Show();
     }
 
     protected async Task ObjectCreate(object obj)
     {
         await ActionCreate.InvokeAsync(obj);
+    }
+
+
+    protected async Task GetDataLookUp(int id)
+    {
+        await ActionGetDataLookUp.InvokeAsync(id);
     }
 }
 

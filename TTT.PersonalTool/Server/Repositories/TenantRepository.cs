@@ -33,5 +33,10 @@ namespace TTT.PersonalTool.Server.Repositories
                 Code = t.Code
             }).ToListAsync();
         }
+
+        public async Task<List<string>> GetTenantCodeLookUp()
+        {
+            return await _context.Tenant.Select(t => t.Code).ToListAsync();
+        }
     }
 }

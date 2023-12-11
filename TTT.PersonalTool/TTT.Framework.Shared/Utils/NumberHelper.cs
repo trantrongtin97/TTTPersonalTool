@@ -155,4 +155,54 @@ public static class NumberHelper
         }
         return false;
     }
+
+    public static object ConvertToDefaultValue(this object? obj)
+    {
+        if (obj is null) return false;
+        if (obj is sbyte)
+        {
+            return default(sbyte);
+        }
+        if (obj is byte)
+        {
+            return default(byte);
+        }
+        if (obj is short)
+        {
+            return default(short);
+        }
+        if (obj is ushort)
+        {
+            return default(ushort);
+        }
+        if (obj is int)
+        {
+            return default(int);
+        }
+        if (obj is uint)
+        {
+            return default(uint);
+        }
+        if (obj is long)
+        {
+            return default(long);
+        }
+        if (obj is ulong)
+        {
+            return default(ulong);
+        }
+        if (obj is float)
+        {
+            return default(float);
+        }
+        if (obj is double)
+        {
+            return default(double);
+        }
+        if (obj is decimal)
+        {
+            return default(decimal);
+        }
+        return false;
+    }
 }

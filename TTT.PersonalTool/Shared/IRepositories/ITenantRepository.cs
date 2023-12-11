@@ -8,5 +8,6 @@ namespace TTT.PersonalTool.Shared.IRepositories
     {
         public Task<int> GetByCode(string tenantCode);
         public Task<List<TenantLookUp>> GetDataLookUp();
+        public Task<List<string>> GetTenantCodeLookUp();
     }
 }

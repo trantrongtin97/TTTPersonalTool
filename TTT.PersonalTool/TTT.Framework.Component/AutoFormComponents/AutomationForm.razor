@@ -1,4 +1,5 @@
-﻿@inherits EditBaseComponent
+﻿@using Newtonsoft.Json;
+@inherits EditBaseComponent
 @typeparam TItem
 @if (ShowConfirmation)
 {
@@ -40,17 +41,20 @@
 @code {
     private bool IsNewForm { get; set; }
     private TItem? Target { get; set; }
+    private Dictionary<string, object?> DicDataLookUp { get; set; }
 
-    public async Task LoadObj(object value)
+    public async Task LoadObj(object value, Dictionary<string, object?> dic)
     {
         if (value is not null)
         {
             Target = (TItem)value;
+            DicDataLookUp = dic;
             IsNewForm = false;
         }
         else
         {
             Target = Activator.CreateInstance<TItem>();
+            DicDataLookUp = dic;
             IsNewForm = true;
         }
     }
@@ -71,38 +75,38 @@
 
     private List<DataLookUp> ParseToLsDataLU(object? obj)
     {
-        return new List<DataLookUp>((IEnumerable<DataLookUp>)obj);
+        return JsonConvert.DeserializeObject<List<DataLookUp>>(obj.ToString());
     }
 
     private List<string> ParseToLsStringLU(object? obj)
     {
-        return new List<string>((IEnumerable<string>)obj);
+        return JsonConvert.DeserializeObject<List<string>>(obj.ToString());
     }
 
     public RenderFragment CreateComponent() => builder =>
     {
         var proList = typeof(TItem).GetProperties();
-        Dictionary<string, object?> dicDataLU = new Dictionary<string, object?>();
+        // Dictionary<string, object?> dicDataLU = new Dictionary<string, object?>();
         foreach (var prp in proList)
         {
-            foreach (var p in proList.Where(t => t.Name.EndsWith("LookUp")))
-            {
-                var dataLookUp = (DataLookUpAttribute)p.GetCustomAttributes(typeof(DataLookUpAttribute), false)?.First();
-                if (dataLookUp.TargetProperty == prp.Name)
-                {
-                    var propInfoLU = typeof(TItem).GetProperty(p.Name);
-                    var propInfoLUValue = propInfoLU.GetValue(Target);
-                    if (propInfoLUValue is not null && propInfoLUValue is IEnumerable<DataLookUp>)
-                    {
-                        dicDataLU[dataLookUp.TargetProperty] = ParseToLsDataLU(propInfoLUValue);
-                    }
+            // foreach (var p in proList.Where(t => t.Name.EndsWith("LookUp")))
+            // {
+            //     var dataLookUp = (DataLookUpAttribute)p.GetCustomAttributes(typeof(DataLookUpAttribute), false)?.First();
+            //     if (dataLookUp.TargetProperty == prp.Name)
+            //     {
+            //         var propInfoLU = typeof(TItem).GetProperty(p.Name);
+            //         var propInfoLUValue = propInfoLU.GetValue(Target);
+            //         if (propInfoLUValue is not null && propInfoLUValue is IEnumerable<DataLookUp>)
+            //         {
+            //             dicDataLU[dataLookUp.TargetProperty] = ParseToLsDataLU(propInfoLUValue);
+            //         }
 
-                    if (propInfoLUValue is not null && propInfoLUValue is IEnumerable<string>)
-                    {
-                        dicDataLU[dataLookUp.TargetProperty] = ParseToLsStringLU(propInfoLUValue);
-                    }
-                }
-            }
+            //         if (propInfoLUValue is not null && propInfoLUValue is IEnumerable<string>)
+            //         {
+            //             dicDataLU[dataLookUp.TargetProperty] = ParseToLsStringLU(propInfoLUValue);
+            //         }
+            //     }
+            // }
             if (prp.Name.EndsWith("LookUp")) continue;
             Type T = prp.GetType();
             if (prp.GetCustomAttributes(typeof(TTTDataTypeAttribute), true).Length != 0)
@@ -145,10 +149,10 @@
                         OpenComponentInputDateTime(ref builder, prp, exp, propInfoValue);
                         break;
                     case TTTDataType.Combobox:
-                        OpenComponentCombobox(ref builder, prp, exp, propInfoValue, dicDataLU);
+                        OpenComponentCombobox(ref builder, prp, exp, propInfoValue, DicDataLookUp);
                         break;
                     case TTTDataType.Dropdowlist:
-                        OpenComponentDropdowlist(ref builder, prp, exp, propInfoValue, dicDataLU);
+                        OpenComponentDropdowlist(ref builder, prp, exp, propInfoValue, DicDataLookUp);
                         break;
                     case TTTDataType.CheckBox:
                         OpenComponentCheckBox(ref builder, prp, exp, propInfoValue);
@@ -343,7 +347,9 @@
                 builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<int>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<int>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (int)propInfoValue.GetValue(Target)))));
                 builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<int>>(exp));
                 if (dic.ContainsKey(prp.Name) && dic[prp.Name] != null)
-                    builder.AddAttribute(indexData, "Data", dic[prp.Name]);
+                {
+                    builder.AddAttribute(indexData, "Data", ParseToLsDataLU(dic[prp.Name]));
+                }
                 else
                     builder.AddAttribute(indexData, "Data", new List<DataLookUp>());
                 break;
@@ -369,7 +375,7 @@
                 builder.AddAttribute(indexValueChange, "ValueChanged", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<Microsoft.AspNetCore.Components.EventCallback<string>>(Microsoft.AspNetCore.Components.EventCallback.Factory.Create<string>(this, Microsoft.AspNetCore.Components.EventCallback.Factory.CreateInferred(this, __value => propInfoValue.SetValue(Target, __value), (string)propInfoValue.GetValue(Target)))));
                 builder.AddAttribute(indexValueExp, "ValueExpression", System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
                 if (dic.ContainsKey(prp.Name) && dic[prp.Name] != null)
-                    builder.AddAttribute(indexData, "Data", dic[prp.Name]);
+                    builder.AddAttribute(indexData, "Data", ParseToLsStringLU(dic[prp.Name]));
                 else
                     builder.AddAttribute(indexData, "Data", new List<string>());
                 break;

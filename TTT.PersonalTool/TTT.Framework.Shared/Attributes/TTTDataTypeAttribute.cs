@@ -2,7 +2,7 @@
 namespace TTT.Framework.Shared.Attributes
 {
     [AttributeUsage(
-        AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter,
+        AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter,
         AllowMultiple = false)]
     public class TTTDataTypeAttribute : ValidationAttribute
     {
